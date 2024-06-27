@@ -1,43 +1,16 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import mergedTypeDefs from './typeDefs/index.ts';
+import mergedResolvers from './resolvers/index.ts';
 
 
-const typeDefs = `#graphql
+interface MyContext {
+  token?: String;
+}
 
-  type Book {
-    title: String
-    author: String
-  }
-
-  type Query {
-    books: [Book]
-  }
-`;
-
-const resolvers = {
-  Query: {
-    books: () => books,
-  },
-};
-
-const books = [
-  {
-    title: 'The Awakening',
-    author: 'Kate Chopin',
-  },
-  {
-    title: 'City of Glass',
-    author: 'Paul Auster',
-  },
-];
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
-
+const server = new ApolloServer<MyContext>({ typeDefs: mergedTypeDefs, resolvers: mergedResolvers });
 const { url } = await startStandaloneServer(server, {
+  context: async ({ req }) => ({ token: req.headers.token }),
   listen: { port: 4000 },
 });
-
-console.log(`🚀  Server ready at: ${url}`);
+console.log(`🚀  Server ready at ${url}`);
