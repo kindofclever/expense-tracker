@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node ./dist/app.js",
-    "dev": "nodemon ./src/app.ts"
+    "start": "node ./dist/backend/index.js",
+    "dev": "nodemon --watch 'backend/**/*' -e ts --exec 'ts-node' ./backend/index.ts"
   },
   "author": "Sandra Gufler",
   "license": "ISC",
@@ -37,6 +37,7 @@
     "@types/node": "^20.14.9",
     "@types/passport": "^1.0.16",
     "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
   }
 }
