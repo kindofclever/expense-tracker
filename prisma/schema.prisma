@@ -1,0 +1,43 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              Int        @id @default(autoincrement())
+  username        String     @unique
+  name            String
+  password        String
+  profilePicture  String
+  gender          Gender
+  transactions    Transaction[]
+}
+
+model Transaction {
+  id          Int        @id @default(autoincrement())
+  description String
+  paymentType PaymentType
+  category    String
+  amount      Float
+  location    String
+  date        String
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id])
+}
+
+enum PaymentType {
+  cash
+  debit
+  credit
+  twint
+}
+
+enum Gender {
+  male
+  female
+  diverse
+}
