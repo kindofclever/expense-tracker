@@ -6,8 +6,8 @@ const userResolver: IResolvers = {
     users: () => {
       return users
     },
-    user: (_, args: { userId: string }) => {
-      return users.find(user => user._id === args.userId);
+    user: (_, userId: string) => {
+      return users.find(user => user._id === userId);
     }
 
   },
