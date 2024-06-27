@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/backend/index.js",
-    "dev": "nodemon --watch 'backend/**/*' -e ts --exec 'ts-node' ./backend/index.ts"
+    "dev": "nodemon --watch 'backend/**/*' -e ts --exec 'node --loader ts-node/esm ./backend/index.ts'"
   },
   "author": "Sandra Gufler",
   "license": "ISC",
@@ -39,5 +39,6 @@
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
-  }
+  },
+  "type": "module"
 }
