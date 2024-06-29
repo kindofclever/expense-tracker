@@ -11,7 +11,7 @@ const App: React.FC = () => {
   const authUser = true;
 
   return (
-    <Router>
+    <>
       {authUser && <Header />}
       <Routes>
         <Route
@@ -35,7 +35,7 @@ const App: React.FC = () => {
           element={<NotFoundPage />}
         />
       </Routes>
-    </Router>
+    </>
   );
 };
 
