@@ -93,6 +93,7 @@ const transactionResolver: IResolvers = {
             category: input.category,
             description: input.description,
             date: input.date,
+            location: input.location
           },
         });
         return updatedTransaction;
