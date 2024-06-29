@@ -3,49 +3,78 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 
 import express from 'express';
+import session from 'express-session';
+import MySQLStoreImport from 'express-mysql-session';
 import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import passport from 'passport';
 
+import { configurePassport } from './passport.config.ts';
 import mergedTypeDefs from './typeDefs/index.ts';
 import mergedResolvers from './resolvers/index.ts';
+import { connectToDb } from './dataBase/connectToDb.ts';
 
-interface MyContext {
-  token?: string;
-}
 
 dotenv.config();
+connectToDb();
+configurePassport();
 
-// Required logic for integrating with Express
 const app = express();
-// Our httpServer handles incoming requests to our Express app.
-// Below, we tell Apollo Server to "drain" this httpServer,
-// enabling our servers to shut down gracefully.
 const httpServer = http.createServer(app);
 
-// Same ApolloServer initialization as before, plus the drain plugin
-// for our httpServer.
-const server = new ApolloServer<MyContext>({
+const MySQLStore = MySQLStoreImport(session as any);
+
+// Session store configuration
+const sessionStore = new MySQLStore({
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT ?? '2342'),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
+
+app.use(
+  session({
+    name: 'mysql',
+    secret: process.env.SESSION_SECRET ?? '',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+const server = new ApolloServer({
   typeDefs: mergedTypeDefs,
   resolvers: mergedResolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
-// Ensure we wait for our server to start
+
 await server.start();
 
-// Set up our Express middleware to handle CORS, body parsing,
-// and our expressMiddleware function.
 app.use(
-  '/',
-  cors<cors.CorsRequest>(),
+  '/graphql',
+  cors<cors.CorsRequest>({ origin: 'http://localhost:3000', credentials: true }),
   express.json(),
-  // expressMiddleware accepts the same arguments:
-  // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
-    context: async ({ req }) => ({ req }),
-  }),
-);
 
-// Modified server startup
+    context: async ({ req, res }) => {
+      console.log("Setting up context");
+      console.log("req:", req);
+      console.log("res:", res);
+      return {
+        req,
+        res,
+        user: req.user,
+        login: req.login.bind(req),
+        logout: req.logout.bind(req),
+      };
+    },
+  }),);
+
 await new Promise<void>((resolve) => httpServer.listen({ port: 4000 }, resolve));
-console.log(`🚀 Server ready at http://localhost:4000/`);
+console.log(`🚀 Server ready at http://localhost:4000/graphql`);

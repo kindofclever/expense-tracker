@@ -1,11 +1,12 @@
 const userTypeDef = `#graphql
 type User {
-  _id: ID!
+  id: ID!
   username: String!
   name: String!
   password: String!
   profilePicture: String!
   gender: Gender!
+  transactions: [Transaction!]!
 }
 
 enum Gender {
@@ -16,14 +17,14 @@ enum Gender {
 
 type Query {
   users: [User!]
-  authorisedUser: User
   user(userId: ID!): User
+  authUser: User
 }
 
 type Mutation {
-  signUp(input: SignUpInput!): User
-  login(input: LoginInput!): User
-  logout: LogoutResponse
+  signUp(input: SignUpInput!): User!
+  login(input: LoginInput!): User!
+  logout: LogoutResponse!
 }
 
 input SignUpInput {
@@ -39,8 +40,7 @@ input LoginInput {
 }
 
 type LogoutResponse {
-  status: String!
-  message: String
+  message: String!
 }`
 
 export default userTypeDef
