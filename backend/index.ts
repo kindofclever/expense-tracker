@@ -61,17 +61,14 @@ app.use(
   cors<cors.CorsRequest>({ origin: 'http://localhost:3000', credentials: true }),
   express.json(),
   expressMiddleware(server, {
-
     context: async ({ req, res }) => {
-      console.log("Setting up context");
-      console.log("req:", req);
-      console.log("res:", res);
       return {
         req,
         res,
         user: req.user,
         login: req.login.bind(req),
         logout: req.logout.bind(req),
+        getUser: () => req.user,
       };
     },
   }),);
