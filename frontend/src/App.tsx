@@ -10,6 +10,9 @@ import TransactionPage from './components/pages/TransactionPage';
 import Header from './components/shared/custom/Header';
 
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user.query';
+import { Toaster } from 'react-hot-toast';
+import PublicRoute from './components/shared/custom/PublicRoute';
+import ProtectedRoute from './components/shared/custom/ProtectedRoute';
 
 const App: React.FC = () => {
   const { loading, data, error } = useQuery(GET_AUTHENTICATED_USER);
@@ -17,34 +20,56 @@ const App: React.FC = () => {
   if (loading) console.log('loading');
   if (error) console.log('error: ', error);
 
-  console.log(data);
-
   return (
     <>
-      {/* {data.authUser && <Header />} */}
-      <Header />
+      {data?.authUser && <Header />}
       <Routes>
         <Route
           path='/'
-          element={<HomePage />}
+          element={
+            <ProtectedRoute
+              isAuthenticated={!!data?.authUser}
+              redirectPath='/login'
+              element={<HomePage />}
+            />
+          }
         />
         <Route
           path='/login'
-          element={<LoginPage />}
+          element={
+            <PublicRoute
+              isAuthenticated={!!data?.authUser}
+              redirectPath='/'
+              element={<LoginPage />}
+            />
+          }
         />
         <Route
           path='/signup'
-          element={<SignUpPage />}
+          element={
+            <PublicRoute
+              isAuthenticated={!!data?.authUser}
+              redirectPath='/'
+              element={<SignUpPage />}
+            />
+          }
         />
         <Route
-          path='/transactions/:id'
-          element={<TransactionPage />}
+          path='/transaction/:id'
+          element={
+            <ProtectedRoute
+              isAuthenticated={!!data?.authUser}
+              redirectPath='/login'
+              element={<TransactionPage />}
+            />
+          }
         />
         <Route
           path='*'
           element={<NotFoundPage />}
         />
       </Routes>
+      <Toaster />
     </>
   );
 };

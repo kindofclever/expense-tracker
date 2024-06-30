@@ -1,9 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-// import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
 import InputField from '../shared/custom/InputField';
 import RadioButton from '../shared/custom/RadioButton';
+import { SIGN_UP } from '../../graphql/mutations/user.mutation';
 
 interface SignUpData {
   name: string;
@@ -20,23 +21,26 @@ const SignUpPage: React.FC = () => {
     gender: '',
   });
 
-  // const [signup, { loading }] = useMutation(SIGN_UP, {
-  //   refetchQueries: ['GetAuthenticatedUser'],
-  // });
+  const [signup, { loading }] = useMutation(SIGN_UP, {
+    refetchQueries: ['GetAuthenticatedUser'],
+  });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log('signup data: ', signUpData);
-      // await signup({
-      //   variables: {
-      //     input: signUpData,
-      //   },
-      // });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+      await signup({
+        variables: {
+          input: signUpData,
+        },
+      });
+    } catch (error: unknown) {
       console.error('Error:', error);
-      toast.error(error.message);
+
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('An unknown error occurred');
+      }
     }
   };
 
@@ -94,7 +98,7 @@ const SignUpPage: React.FC = () => {
               />
               <div className='flex flex-col'>
                 <RadioButton
-                  id='diverese'
+                  id='diverse'
                   label='Diverse'
                   value='diverse'
                   onChange={handleChange}
@@ -119,8 +123,7 @@ const SignUpPage: React.FC = () => {
                 <button
                   type='submit'
                   className='w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed'>
-                  {/* {loading ? 'Loading...' : 'Sign Up'} */}
-                  Sign Up
+                  {loading ? 'Loading...' : 'Sign Up'}
                 </button>
               </div>
             </form>
