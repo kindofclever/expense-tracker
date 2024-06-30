@@ -27,7 +27,7 @@ const SignUpPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log('hello');
+      console.log('signup data: ', signUpData);
       // await signup({
       //   variables: {
       //     input: signUpData,
@@ -92,13 +92,13 @@ const SignUpPage: React.FC = () => {
                 value={signUpData.password}
                 onChange={handleChange}
               />
-              <div className='flex gap-10'>
+              <div className='flex flex-col'>
                 <RadioButton
-                  id='male'
-                  label='Male'
-                  value='male'
+                  id='diverese'
+                  label='Diverse'
+                  value='diverse'
                   onChange={handleChange}
-                  checked={signUpData.gender === 'male'}
+                  checked={signUpData.gender === 'diverse'}
                 />
                 <RadioButton
                   id='female'
@@ -108,11 +108,11 @@ const SignUpPage: React.FC = () => {
                   checked={signUpData.gender === 'female'}
                 />
                 <RadioButton
-                  id='diverese'
-                  label='Diverse'
-                  value='diverse'
+                  id='male'
+                  label='Male'
+                  value='male'
                   onChange={handleChange}
-                  checked={signUpData.gender === 'diverse'}
+                  checked={signUpData.gender === 'male'}
                 />
               </div>
               <div>
