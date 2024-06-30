@@ -3,7 +3,7 @@ import Card from './Card';
 import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
 import {
   GET_AUTHENTICATED_USER,
-  GET_USER_AND_TRANSACTIONS,
+  // GET_USER_AND_TRANSACTIONS,
 } from '../../../graphql/queries/user.query';
 import { Transaction } from '../../../interfaces/interfaces';
 
@@ -12,20 +12,17 @@ const Cards: React.FC = () => {
     useQuery(GET_TRANSACTIONS);
   const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
 
-  const userId = authUserData?.authUser?._id;
+  // const userId = authUserData?.authUser?._id;
 
-  const { data: userAndTransactionsData } = useQuery(
-    GET_USER_AND_TRANSACTIONS,
-    {
-      variables: {
-        userId,
-      },
-      skip: !userId,
-    }
-  );
-
-  console.log('userAndTransactions:', userAndTransactionsData);
-  console.log('cards:', transactionsData);
+  // const { data: userAndTransactionsData } = useQuery(
+  //   GET_USER_AND_TRANSACTIONS,
+  //   {
+  //     variables: {
+  //       userId,
+  //     },
+  //     skip: !userId,
+  //   }
+  // );
 
   return (
     <div className='w-full px-10 min-h-[40vh]'>

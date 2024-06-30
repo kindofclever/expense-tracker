@@ -1,27 +1,77 @@
+import { useMutation, useQuery } from '@apollo/client';
 import { useState, ChangeEvent, FormEvent } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+
+import { UPDATE_TRANSACTION } from '../../graphql/mutations/transaction.mutation';
+import {
+  GET_TRANSACTION,
+  GET_TRANSACTION_STATISTICS,
+} from '../../graphql/queries/transaction.query';
+import {
+  PaymentType,
+  Category,
+  Transaction,
+} from '../../interfaces/interfaces';
 import TransactionFormSkeleton from '../shared/skeletons/TransactionFormSkeleton';
 
-interface FormData {
-  description: string;
-  paymentType: string;
-  category: string;
-  amount: string;
-  location: string;
-  date: string;
-}
-
 const TransactionPage: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    description: '',
-    paymentType: '',
-    category: '',
-    amount: '',
-    location: '',
-    date: '',
+  const { id } = useParams<{ id: string }>();
+  const { loading, data } = useQuery(GET_TRANSACTION, {
+    variables: { id },
   });
+
+  const navigate = useNavigate();
+
+  const [updateTransaction, { loading: loadingUpdate }] = useMutation(
+    UPDATE_TRANSACTION,
+    {
+      refetchQueries: [{ query: GET_TRANSACTION_STATISTICS }],
+    }
+  );
+
+  const initialFormData: Partial<Transaction> = {
+    description: data?.transaction?.description || '',
+    paymentType: data?.transaction?.paymentType || PaymentType.Cash,
+    category: data?.transaction?.category || Category.saving,
+    amount: data?.transaction?.amount || 0,
+    location: data?.transaction?.location || '',
+    date: data?.transaction?.date
+      ? dayjs(Number(data.transaction.date)).format('YYYY-MM-DD')
+      : '',
+  };
+
+  const [formData, setFormData] =
+    useState<Partial<Transaction>>(initialFormData);
+
+  if (!loading && data && formData.description === '') {
+    setFormData(initialFormData);
+  }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const amount = parseFloat(formData.amount as unknown as string); // convert amount to number
+
+    try {
+      await updateTransaction({
+        variables: {
+          input: {
+            ...formData,
+            amount,
+            transactionId: id,
+          },
+        },
+      });
+      toast.success('Transaction updated successfully');
+      navigate('/');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('An unknown error occurred');
+      }
+    }
   };
 
   const handleInputChange = (
@@ -34,12 +84,11 @@ const TransactionPage: React.FC = () => {
     }));
   };
 
-  // eslint-disable-next-line no-constant-condition
-  if (1 === 1) return <TransactionFormSkeleton />;
+  if (loading) return <TransactionFormSkeleton />;
 
   return (
     <div className='h-screen max-w-4xl mx-auto flex flex-col items-center'>
-      <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gray-400 inline-block text-transparent bg-clip-text'>
+      <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text'>
         Update this transaction
       </p>
       <form
@@ -59,7 +108,7 @@ const TransactionPage: React.FC = () => {
               name='description'
               type='text'
               placeholder='Rent, Groceries, Salary, etc.'
-              value={formData.description}
+              value={formData.description || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -78,11 +127,14 @@ const TransactionPage: React.FC = () => {
                 id='paymentType'
                 name='paymentType'
                 onChange={handleInputChange}
-                defaultValue={formData.paymentType}>
-                <option value='cash'>Cash</option>
-                <option value='twint'>Twint</option>
-                <option value='debit'>Debit card</option>
-                <option value='credit'>Credit card</option>
+                value={formData.paymentType || PaymentType.Cash}>
+                {Object.values(PaymentType).map((type) => (
+                  <option
+                    key={type}
+                    value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </option>
+                ))}
               </select>
               <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
                 <svg
@@ -108,10 +160,14 @@ const TransactionPage: React.FC = () => {
                 id='category'
                 name='category'
                 onChange={handleInputChange}
-                defaultValue={formData.category}>
-                <option value='saving'>Saving</option>
-                <option value='expense'>Expense</option>
-                <option value='investment'>Investment</option>
+                value={formData.category || Category.saving}>
+                {Object.values(Category).map((type) => (
+                  <option
+                    key={type}
+                    value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </option>
+                ))}
               </select>
               <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
                 <svg
@@ -137,7 +193,7 @@ const TransactionPage: React.FC = () => {
               name='amount'
               type='number'
               placeholder='150'
-              value={formData.amount}
+              value={formData.amount?.toString() || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -157,7 +213,7 @@ const TransactionPage: React.FC = () => {
               name='location'
               type='text'
               placeholder='St. Gallen'
-              value={formData.location}
+              value={formData.location || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -175,7 +231,7 @@ const TransactionPage: React.FC = () => {
               id='date'
               className='appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
               placeholder='Select date'
-              value={formData.date}
+              value={formData.date || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -183,8 +239,9 @@ const TransactionPage: React.FC = () => {
         {/* SUBMIT BUTTON */}
         <button
           className='text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br from-pink-500 to-pink-500 hover:from-pink-600 hover:to-pink-600'
-          type='submit'>
-          Update Transaction
+          type='submit'
+          disabled={loadingUpdate}>
+          {loadingUpdate ? 'Updating...' : 'Update Transaction'}
         </button>
       </form>
     </div>

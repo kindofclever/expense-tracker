@@ -1,12 +1,18 @@
-import { FormEvent } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { useMutation } from '@apollo/client';
-import { CREATE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
 import toast from 'react-hot-toast';
+import dayjs from 'dayjs';
+
+import { Category, PaymentType } from '../../../interfaces/interfaces';
+import { CREATE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
 
 const TransactionForm: React.FC = () => {
   const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
     refetchQueries: ['GetTransactions', 'GetTransactionStatistics'],
   });
+
+  const today = dayjs().format('YYYY-MM-DD');
+  const [selectedDate, setSelectedDate] = useState(today);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,6 +33,7 @@ const TransactionForm: React.FC = () => {
       await createTransaction({ variables: { input: transactionData } });
 
       form.reset();
+      setSelectedDate(today); // Reset the date to today after successful submission
       toast.success('Transaction created successfully');
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -35,6 +42,10 @@ const TransactionForm: React.FC = () => {
         toast.error('An unknown error occurred');
       }
     }
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(e.target.value);
   };
 
   return (
@@ -72,10 +83,13 @@ const TransactionForm: React.FC = () => {
               className='block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
               id='paymentType'
               name='paymentType'>
-              <option value='cash'>Cash</option>
-              <option value='twint'>Twint</option>
-              <option value='debit'>Debit card</option>
-              <option value='credit'>Credit card</option>
+              {Object.values(PaymentType).map((type) => (
+                <option
+                  key={type}
+                  value={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </option>
+              ))}
             </select>
             <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
               <svg
@@ -100,9 +114,13 @@ const TransactionForm: React.FC = () => {
               className='block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
               id='category'
               name='category'>
-              <option value='saving'>Saving</option>
-              <option value='expense'>Expense</option>
-              <option value='investment'>Investment</option>
+              {Object.values(Category).map((type) => (
+                <option
+                  key={type}
+                  value={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </option>
+              ))}
             </select>
             <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
               <svg
@@ -157,6 +175,8 @@ const TransactionForm: React.FC = () => {
             Date
           </label>
           <input
+            value={selectedDate}
+            onChange={handleDateChange}
             type='date'
             name='date'
             id='date'

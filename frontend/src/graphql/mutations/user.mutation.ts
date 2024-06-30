@@ -6,6 +6,7 @@ export const SIGN_UP = gql`
 			id
 			name
 			username
+			password
 		}
 	}
 `;

@@ -37,8 +37,8 @@ export interface Transaction {
   amount: number;
   location: string;
   date: string;
-  userId: number;
-  user: User;
+  userId?: number;
+  user?: User;
 }
 
 export interface CreateTransactionInput {
