@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-
-import InputField from '../components/custom/InputField';
+import InputField from '../shared/custom/InputField';
 
 interface LoginData {
   username: string;

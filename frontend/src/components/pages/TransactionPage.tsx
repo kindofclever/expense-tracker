@@ -1,6 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-
-import TransactionFormSkeleton from '../components/skeletons/TransactionFormSkeleton';
+import TransactionFormSkeleton from '../shared/skeletons/TransactionFormSkeleton';
 
 interface FormData {
   description: string;

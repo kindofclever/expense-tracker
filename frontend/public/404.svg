@@ -1,0 +1,15 @@
+<svg width="800px" height="200px" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="none" stroke-width="1" fill-rule="evenodd">
+    <g transform="translate(0.000000, 50.000000)">
+      <text id="4" font-family="Arial" font-size="250" font-weight="bold" letter-spacing="5" fill="#F6009B">
+        <tspan x="100" y="200">4</tspan>
+      </text>
+      <text id="0" font-family="Arial" font-size="250" font-weight="bold" letter-spacing="5" fill="#F6009B">
+        <tspan x="300" y="200">0</tspan>
+      </text>
+      <text id="4" font-family="Arial" font-size="250" font-weight="bold" letter-spacing="5" fill="#F6009B">
+        <tspan x="500" y="200">4</tspan>
+      </text>
+    </g>
+  </g>
+</svg>

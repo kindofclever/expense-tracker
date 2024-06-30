@@ -1,11 +1,11 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Header from './components/custom/Header';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
-import TransactionPage from './pages/TransactionPage';
-import NotFoundPage from './pages/NotFoundPage';
+import HomePage from './components/pages/HomePage';
+import LoginPage from './components/pages/LoginPage';
+import NotFoundPage from './components/pages/NotFoundPage';
+import SignUpPage from './components/pages/SignUpPage';
+import TransactionPage from './components/pages/TransactionPage';
+import Header from './components/shared/custom/Header';
 
 const App: React.FC = () => {
   const authUser = true;

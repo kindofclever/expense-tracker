@@ -2,9 +2,8 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 // import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
-
-import RadioButton from '../components/custom/RadioButton';
-import InputField from '../components/custom/InputField';
+import InputField from '../shared/custom/InputField';
+import RadioButton from '../shared/custom/RadioButton';
 
 interface SignUpData {
   name: string;
