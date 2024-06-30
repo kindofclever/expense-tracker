@@ -34,8 +34,6 @@ const SignUpPage: React.FC = () => {
         },
       });
     } catch (error: unknown) {
-      console.error('Error:', error);
-
       if (error instanceof Error) {
         toast.error(error.message);
       } else {

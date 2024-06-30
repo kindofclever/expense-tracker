@@ -4,9 +4,9 @@ type Transaction {
   userId: ID!
   description: String!
   paymentType: PaymentType!
-  category: String!
+  category: Category!
   amount: Float!
-  location: String
+  location: String!
   date: String!
   user: User!
 }
@@ -16,6 +16,12 @@ enum PaymentType {
   debit
   credit
   twint
+}
+
+enum Category {
+  investment
+  saving
+  expense
 }
 
 type Query {
@@ -38,7 +44,7 @@ type CategoryStatistics {
 input CreateTransactionInput {
   description: String!
   paymentType: PaymentType!
-  category: String!
+  category: Category!
   amount: Float!
   date: String!
   location: String
@@ -48,7 +54,7 @@ input UpdateTransactionInput {
   transactionId: ID!
   description: String
   paymentType: PaymentType
-  category: String
+  category: Category
   amount: Float
   location: String
   date: String

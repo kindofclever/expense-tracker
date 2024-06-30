@@ -35,8 +35,6 @@ const LoginPage: React.FC = () => {
     try {
       await login({ variables: { input: loginData } });
     } catch (error: unknown) {
-      console.error('Error:', error);
-
       if (error instanceof Error) {
         toast.error(error.message);
       } else {

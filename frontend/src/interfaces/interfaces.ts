@@ -35,7 +35,7 @@ export interface Transaction {
   paymentType: PaymentType;
   category: Category;
   amount: number;
-  location?: string;
+  location: string;
   date: string;
   userId: number;
   user: User;
@@ -47,7 +47,7 @@ export interface CreateTransactionInput {
   category: Category;
   amount: number;
   date: string;
-  location?: string;
+  location: string;
 }
 
 export interface UpdateTransactionInput {
@@ -58,6 +58,24 @@ export interface UpdateTransactionInput {
   amount?: number;
   location?: string;
   date?: string;
+}
+
+export interface CategoryStatistic {
+  category: Category
+  totalAmount: number;
+}
+
+export interface TransactionStatisticsData {
+  categoryStatistics: CategoryStatistic[];
+}
+
+export interface AuthUser {
+  id: string;
+  profilePicture: string;
+}
+
+export interface AuthUserData {
+  authUser: AuthUser;
 }
 
 
@@ -75,7 +93,6 @@ export enum PaymentType {
   Credit = 'credit',
   Twint = 'twint',
 }
-
 export enum Category {
   investment = 'investment',
   saving = 'saving',
