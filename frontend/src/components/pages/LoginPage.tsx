@@ -1,6 +1,9 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import InputField from '../shared/custom/InputField';
+import toast from 'react-hot-toast';
+import { useMutation } from '@apollo/client';
+import { LOGIN } from '../../graphql/mutations/user.mutation';
 
 interface LoginData {
   username: string;
@@ -13,6 +16,10 @@ const LoginPage: React.FC = () => {
     password: '',
   });
 
+  const [login, { loading }] = useMutation(LOGIN, {
+    refetchQueries: ['GetAuthenticatedUser'],
+  });
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginData((prevData) => ({
@@ -21,9 +28,21 @@ const LoginPage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(loginData);
+    if (!loginData.username || !loginData.password)
+      return toast.error('Please fill in all fields');
+    try {
+      await login({ variables: { input: loginData } });
+    } catch (error: unknown) {
+      console.error('Error:', error);
+
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('An unknown error occurred');
+      }
+    }
   };
 
   return (
@@ -58,8 +77,10 @@ const LoginPage: React.FC = () => {
               <div>
                 <button
                   type='submit'
-                  className='w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed'>
-                  Login
+                  className='w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black  focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed
+									'
+                  disabled={loading}>
+                  {loading ? 'Loading...' : 'Login'}
                 </button>
               </div>
             </form>

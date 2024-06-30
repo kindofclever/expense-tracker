@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import HomePage from './components/pages/HomePage';
@@ -11,8 +11,6 @@ import Header from './components/shared/custom/Header';
 
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user.query';
 import { Toaster } from 'react-hot-toast';
-import PublicRoute from './components/shared/custom/PublicRoute';
-import ProtectedRoute from './components/shared/custom/ProtectedRoute';
 
 const App: React.FC = () => {
   const { loading, data, error } = useQuery(GET_AUTHENTICATED_USER);
@@ -26,42 +24,20 @@ const App: React.FC = () => {
       <Routes>
         <Route
           path='/'
-          element={
-            <ProtectedRoute
-              isAuthenticated={!!data?.authUser}
-              redirectPath='/login'
-              element={<HomePage />}
-            />
-          }
+          element={data?.authUser ? <HomePage /> : <Navigate to='/login' />}
         />
         <Route
           path='/login'
-          element={
-            <PublicRoute
-              isAuthenticated={!!data?.authUser}
-              redirectPath='/'
-              element={<LoginPage />}
-            />
-          }
+          element={!data?.authUser ? <LoginPage /> : <Navigate to='/' />}
         />
         <Route
           path='/signup'
-          element={
-            <PublicRoute
-              isAuthenticated={!!data?.authUser}
-              redirectPath='/'
-              element={<SignUpPage />}
-            />
-          }
+          element={!data?.authUser ? <SignUpPage /> : <Navigate to='/' />}
         />
         <Route
           path='/transaction/:id'
           element={
-            <ProtectedRoute
-              isAuthenticated={!!data?.authUser}
-              redirectPath='/login'
-              element={<TransactionPage />}
-            />
+            data?.authUser ? <TransactionPage /> : <Navigate to='/login' />
           }
         />
         <Route
