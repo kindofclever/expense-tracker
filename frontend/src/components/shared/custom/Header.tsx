@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Spotlight } from '../ui/Spotlight';
+import { Spotlight } from '../../ui/Spotlight';
 
 const Header = () => {
   return (
