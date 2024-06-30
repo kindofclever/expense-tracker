@@ -82,7 +82,6 @@ const userResolver: IResolvers = {
       }
 
       return new Promise((resolve, reject) => {
-        console.log("context", context);
         context.req.login(user, (err: Error) => {
           if (err) return reject(err);
           resolve(user);
@@ -91,20 +90,16 @@ const userResolver: IResolvers = {
     },
 
     logout: async (_: any, __: any, context: any): Promise<{ message: string }> => {
-      console.log("Logout mutation called");
       return new Promise((resolve, reject) => {
         context.req.logout((err: Error) => {
           if (err) {
-            console.log("Error during logout:", err);
             return reject(err);
           }
           context.req.session.destroy((err: Error) => {
             if (err) {
-              console.log("Error destroying session:", err);
               return reject(err);
             }
             context.res.clearCookie("connect.sid");
-            console.log("User logged out successfully");
             resolve({ message: 'Logged out successfully' });
           });
         });

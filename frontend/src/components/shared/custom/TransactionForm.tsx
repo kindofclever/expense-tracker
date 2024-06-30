@@ -6,6 +6,7 @@ const TransactionForm: React.FC = () => {
 
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const transactionData = {
       description: formData.get('description') as string,
       paymentType: formData.get('paymentType') as string,
@@ -14,7 +15,6 @@ const TransactionForm: React.FC = () => {
       location: formData.get('location') as string,
       date: formData.get('date') as string,
     };
-    console.log('transactionData', transactionData);
   };
 
   return (
