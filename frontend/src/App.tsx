@@ -27,7 +27,7 @@ const App: React.FC = () => {
           element={<SignUpPage />}
         />
         <Route
-          path='/transaction/:id'
+          path='/transactions/:id'
           element={<TransactionPage />}
         />
         <Route
