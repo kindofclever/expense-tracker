@@ -1,10 +1,8 @@
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import Card from './Card';
 import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
-import {
-  GET_AUTHENTICATED_USER,
-  // GET_USER_AND_TRANSACTIONS,
-} from '../../../graphql/queries/user.query';
+import { GET_AUTHENTICATED_USER } from '../../../graphql/queries/user.query';
 import { Transaction } from '../../../interfaces/interfaces';
 
 const Cards: React.FC = () => {
@@ -12,24 +10,46 @@ const Cards: React.FC = () => {
     useQuery(GET_TRANSACTIONS);
   const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
 
-  // const userId = authUserData?.authUser?._id;
+  const [filter, setFilter] = useState('');
 
-  // const { data: userAndTransactionsData } = useQuery(
-  //   GET_USER_AND_TRANSACTIONS,
-  //   {
-  //     variables: {
-  //       userId,
-  //     },
-  //     skip: !userId,
-  //   }
-  // );
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value);
+  };
+
+  const filteredTransactions = transactionsData?.transactions?.filter(
+    (transaction: Transaction) => {
+      const filterLower = filter.toLowerCase();
+
+      return (
+        filter === '' ||
+        (transaction.description?.toLowerCase().includes(filterLower) ??
+          false) ||
+        (transaction.paymentType?.toLowerCase().includes(filterLower) ??
+          false) ||
+        (transaction.amount?.toString().includes(filterLower) ?? false) ||
+        (transaction.category?.toLowerCase().includes(filterLower) ?? false) ||
+        (transaction.location?.toLowerCase().includes(filterLower) ?? false) ||
+        (transaction.date?.toLowerCase().includes(filterLower) ?? false)
+      );
+    }
+  );
 
   return (
     <div className='w-full px-10 min-h-[40vh]'>
       <p className='text-5xl font-bold text-center my-10'>History</p>
+      {!transactionsLoading && transactionsData?.transactions?.length > 0 && (
+        <input
+          className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-5'
+          id='filter'
+          type='text'
+          placeholder='Search for transactions'
+          value={filter}
+          onChange={handleFilterChange}
+        />
+      )}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20'>
         {!transactionsLoading &&
-          transactionsData?.transactions?.map((transaction: Transaction) => (
+          filteredTransactions?.map((transaction: Transaction) => (
             <Card
               key={transaction.id}
               transaction={transaction}
@@ -38,7 +58,7 @@ const Cards: React.FC = () => {
             />
           ))}
       </div>
-      {!transactionsLoading && transactionsData?.transactions?.length === 0 && (
+      {!transactionsLoading && filteredTransactions?.length === 0 && (
         <p className='text-2xl font-bold text-center w-full'>
           No transaction history found.
         </p>

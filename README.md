@@ -57,9 +57,11 @@ and various other technologies for authentication and session management.
 
 ## TODOs:
 
-- Set up CI/CD
+- Add functionality to filter the expense/investment/savings cards
+- Add favicon
 - Add user page and give the users possibilities to customize their profile
 - Add language support
-- Add functionality to filter the expense/investment/savings cards
-- Imporve the pie chart to see more relevant information
 - Add more categories to spending
+- Imporve the pie chart to see more relevant information
+- Make it more responsive
+- Set up CI/CD
