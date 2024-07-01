@@ -1,10 +1,8 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Card from './Card';
 import { MockedProvider } from '@apollo/client/testing';
 import { BrowserRouter } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { DELETE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
 import {
   Category,
   Gender,
@@ -13,7 +11,6 @@ import {
   User,
 } from '../../../interfaces/interfaces';
 import { mocks } from '../../../testing/mockData';
-import { vi } from 'vitest';
 
 const mockTransaction: Transaction = {
   id: 1,
