@@ -38,7 +38,7 @@ const TransactionPage: React.FC = () => {
     amount: data?.transaction?.amount || 0,
     location: data?.transaction?.location || '',
     date: data?.transaction?.date
-      ? dayjs(Number(data.transaction.date)).format('YYYY-MM-DD')
+      ? dayjs(data.transaction.date).format('YYYY-MM-DD')
       : '',
   };
 
