@@ -66,3 +66,4 @@ and various other technologies for authentication and session management.
 - Make it more responsive
 - Set up CI/CD
 - Cards pagination
+- SEO
