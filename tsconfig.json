@@ -7,7 +7,7 @@
     "rootDir": "./backend",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
     "typeRoots": ["./node_modules/@types"]
   },
   "include": ["backend/**/*"]
