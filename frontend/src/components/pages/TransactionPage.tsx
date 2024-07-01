@@ -32,11 +32,11 @@ const TransactionPage: React.FC = () => {
   );
 
   const initialFormData: Partial<Transaction> = {
-    description: data?.transaction?.description || '',
-    paymentType: data?.transaction?.paymentType || PaymentType.Cash,
-    category: data?.transaction?.category || Category.saving,
-    amount: data?.transaction?.amount || 0,
-    location: data?.transaction?.location || '',
+    description: data?.transaction?.description,
+    paymentType: data?.transaction?.paymentType,
+    category: data?.transaction?.category,
+    amount: data?.transaction?.amount,
+    location: data?.transaction?.location,
     date: data?.transaction?.date
       ? dayjs(data.transaction.date).format('YYYY-MM-DD')
       : '',
@@ -45,13 +45,9 @@ const TransactionPage: React.FC = () => {
   const [formData, setFormData] =
     useState<Partial<Transaction>>(initialFormData);
 
-  if (!loading && data && formData.description === '') {
-    setFormData(initialFormData);
-  }
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const amount = parseFloat(formData.amount as unknown as string); // convert amount to number
+    const amount = parseFloat(formData.amount as unknown as string);
 
     try {
       await updateTransaction({
@@ -127,7 +123,7 @@ const TransactionPage: React.FC = () => {
                 id='paymentType'
                 name='paymentType'
                 onChange={handleInputChange}
-                value={formData.paymentType || PaymentType.Cash}>
+                value={formData.paymentType}>
                 {Object.values(PaymentType).map((type) => (
                   <option
                     key={type}

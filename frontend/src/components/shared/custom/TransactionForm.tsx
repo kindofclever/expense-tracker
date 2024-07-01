@@ -163,7 +163,7 @@ const TransactionForm: React.FC = () => {
             id='location'
             name='location'
             type='text'
-            placeholder='New York'
+            placeholder='St. Gallen'
           />
         </div>
 

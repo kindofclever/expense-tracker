@@ -89,7 +89,8 @@ const transactionResolver: IResolvers = {
             category: input.category,
             description: input.description,
             date: input.date,
-            location: input.location
+            location: input.location,
+            paymentType: input.paymentType
           },
         });
         return updatedTransaction;

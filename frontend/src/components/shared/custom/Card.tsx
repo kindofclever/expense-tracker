@@ -1,12 +1,13 @@
 import React from 'react';
 import { FaLocationDot, FaSackDollar, FaTrash } from 'react-icons/fa6';
-import { MdOutlinePayments } from 'react-icons/md';
+import { MdOutlineDescription, MdOutlinePayments } from 'react-icons/md';
 import { HiPencilAlt } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { Category, Transaction, User } from '../../../interfaces/interfaces';
 import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
 import { DELETE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
+import dayjs from 'dayjs';
 
 interface CardProps {
   cardType: Category;
@@ -67,16 +68,16 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
           </div>
         </div>
         <p className='text-white flex items-center gap-1'>
+          <MdOutlineDescription />
+          Description: {description}
+        </p>
+        <p className='text-white flex items-center gap-1'>
           <MdOutlinePayments />
           Payment Type: {paymentType}
         </p>
         <p className='text-white flex items-center gap-1'>
-          <MdOutlinePayments />
-          Payment Type: {description}
-        </p>
-        <p className='text-white flex items-center gap-1'>
           <FaSackDollar />
-          Amount: ${amount}
+          Amount: {amount}
         </p>
         <p className='text-white flex items-center gap-1'>
           <FaLocationDot />
@@ -84,7 +85,7 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
         </p>
         <div className='flex justify-between items-center'>
           <p className='text-xs text-black font-bold'>
-            {new Date(date).toLocaleDateString()}
+            {dayjs(date).format('DD.MM.YYYY')}
           </p>
           <img
             src={authUser.profilePicture}

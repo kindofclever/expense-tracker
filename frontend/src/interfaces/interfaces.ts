@@ -88,10 +88,10 @@ export enum Gender {
 }
 
 export enum PaymentType {
-  Cash = 'cash',
-  Debit = 'debit',
-  Credit = 'credit',
-  Twint = 'twint',
+  cash = 'cash',
+  debit = 'debit',
+  credit = 'credit',
+  twint = 'twint',
 }
 export enum Category {
   investment = 'investment',
