@@ -2,7 +2,7 @@ import { PrismaClient, User } from '@prisma/client';
 import { IResolvers } from '@graphql-tools/utils';
 import bcrypt from 'bcryptjs';
 
-import { LoginInput, SignUpInput } from '../interfaces/interfaces.ts';
+import { LoginInput, SignUpInput } from '../interfaces/interfaces.js';
 
 const prisma = new PrismaClient();
 

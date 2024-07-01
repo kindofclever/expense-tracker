@@ -9,16 +9,19 @@ import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
+import path from 'path';
 
-import { configurePassport } from './passport.config.ts';
-import mergedTypeDefs from './typeDefs/index.ts';
-import mergedResolvers from './resolvers/index.ts';
-import { connectToDb } from './dataBase/connectToDb.ts';
+import { configurePassport } from './passport.config.js';
+import mergedTypeDefs from './typeDefs/index.js';
+import mergedResolvers from './resolvers/index.js';
+import { connectToDb } from './dataBase/connectToDb.js';
 
 
 dotenv.config();
 connectToDb();
 configurePassport();
+
+const __dirname = path.resolve();
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -77,5 +80,11 @@ app.use(
       };
     },
   }),);
+
+app.use(express.static(path.join(__dirname, "frontend/dist")));
+
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/dist", "index.html"));
+});
 
 await new Promise<void>((resolve) => httpServer.listen({ port: 4000 }, resolve));
