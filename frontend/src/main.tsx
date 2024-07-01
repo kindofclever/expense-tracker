@@ -8,8 +8,10 @@ import './index.css';
 import GridBackground from './components/shared/ui/GridBackground.tsx';
 
 const client = new ApolloClient({
-  //TODO: update this for production
-  uri: 'http://localhost:4000/graphql',
+  uri:
+    import.meta.env.VITE_NODE_ENV === 'development'
+      ? 'http://localhost:4000/graphql'
+      : '/graphql', // the URL of our GraphQL server.
   cache: new InMemoryCache(),
   credentials: 'include',
 });
