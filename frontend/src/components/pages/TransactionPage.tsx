@@ -1,5 +1,5 @@
+import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { useState, ChangeEvent, FormEvent } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -31,19 +31,27 @@ const TransactionPage: React.FC = () => {
     }
   );
 
-  const initialFormData: Partial<Transaction> = {
-    description: data?.transaction?.description,
-    paymentType: data?.transaction?.paymentType,
-    category: data?.transaction?.category,
-    amount: data?.transaction?.amount,
-    location: data?.transaction?.location,
-    date: data?.transaction?.date
-      ? dayjs(data.transaction.date).format('YYYY-MM-DD')
-      : '',
-  };
+  const [formData, setFormData] = useState<Partial<Transaction>>({
+    description: '',
+    paymentType: PaymentType.cash,
+    category: Category.saving,
+    amount: 0,
+    location: '',
+    date: '',
+  });
 
-  const [formData, setFormData] =
-    useState<Partial<Transaction>>(initialFormData);
+  useEffect(() => {
+    if (data?.transaction) {
+      setFormData({
+        description: data.transaction.description,
+        paymentType: data.transaction.paymentType,
+        category: data.transaction.category,
+        amount: data.transaction.amount,
+        location: data.transaction.location,
+        date: dayjs(data.transaction.date).format('YYYY-MM-DD'),
+      });
+    }
+  }, [data]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

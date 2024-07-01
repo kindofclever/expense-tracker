@@ -25,7 +25,6 @@ const httpServer = http.createServer(app);
 
 const MySQLStore = MySQLStoreImport(session as any);
 
-// Session store configuration
 const sessionStore = new MySQLStore({
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT ?? '2342'),

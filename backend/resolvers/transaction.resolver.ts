@@ -27,7 +27,8 @@ const transactionResolver: IResolvers = {
           where: { id: parseInt(transactionId) },
         });
         return transaction;
-      } catch (err) {
+      } catch (err: unknown) {
+        console.error("Error getting transaction", err);
         throw new Error("Error getting transaction");
       }
     },
@@ -94,7 +95,8 @@ const transactionResolver: IResolvers = {
           },
         });
         return updatedTransaction;
-      } catch (err) {
+      } catch (err: unknown) {
+        console.error('error updating transaction: ' + err);
         throw new Error("Error updating transaction");
       }
     },

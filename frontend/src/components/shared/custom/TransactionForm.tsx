@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -31,9 +31,8 @@ const TransactionForm: React.FC = () => {
 
     try {
       await createTransaction({ variables: { input: transactionData } });
-
       form.reset();
-      setSelectedDate(today); // Reset the date to today after successful submission
+      setSelectedDate(today);
       toast.success('Transaction created successfully');
     } catch (error: unknown) {
       if (error instanceof Error) {
