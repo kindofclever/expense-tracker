@@ -58,11 +58,13 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
             <FaTrash
               className='cursor-pointer'
               onClick={handleDelete}
+              data-testid='delete-icon'
             />
             <Link to={`/transaction/${transaction.id}`}>
               <HiPencilAlt
                 className='cursor-pointer'
                 size={20}
+                data-testid='edit-icon'
               />
             </Link>
           </div>

@@ -23,5 +23,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "utils"]
+  "include": ["src", "utils", "fileMock.js"]
 }
