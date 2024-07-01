@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc && npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "node ./dist/backend/index.js",
+    "start": "node ./dist/index.js",
     "dev": "nodemon --watch 'backend/**/*' -e ts --exec 'node --loader ts-node/esm ./backend/index.ts'"
   },
   "author": "Sandra Gufler",
