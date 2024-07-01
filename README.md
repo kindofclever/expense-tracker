@@ -67,3 +67,4 @@ and various other technologies for authentication and session management.
 - Set up CI/CD
 - Cards pagination
 - SEO
+- Style it better and use reusable colours from tailwind config

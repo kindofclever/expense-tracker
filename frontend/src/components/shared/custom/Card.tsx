@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaLocationDot, FaSackDollar, FaTrash } from 'react-icons/fa6';
 import { MdOutlineDescription, MdOutlinePayments } from 'react-icons/md';
 import { HiPencilAlt } from 'react-icons/hi';
@@ -16,13 +16,14 @@ interface CardProps {
 }
 
 const categoryColorMap: { [key in CardProps['cardType']]: string } = {
-  saving: 'from-slate-200 to-green-400',
+  saving: 'from-green-400 to-green-600',
   expense: 'from-pink-800 to-pink-600',
   investment: 'from-blue-700 to-blue-400',
 };
 
 const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
   const { amount, location, date, paymentType, description } = transaction;
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   const [deleteTransaction, { loading }] = useMutation(DELETE_TRANSACTION, {
     refetchQueries: ['GetTransactions', 'GetTransactionStatistics'],
@@ -45,6 +46,14 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
     }
   };
 
+  const openDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
   if (loading) return <h2>Loading...</h2>;
 
   return (
@@ -57,7 +66,7 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
           <div className='flex items-center gap-2'>
             <FaTrash
               className='cursor-pointer'
-              onClick={handleDelete}
+              onClick={openDialog}
               data-testid='delete-icon'
             />
             <Link to={`/transaction/${transaction.id}`}>
@@ -96,6 +105,32 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
           />
         </div>
       </div>
+
+      {isDialogOpen && (
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'>
+          <div className='bg-white p-6 rounded-md shadow-md'>
+            <h3 className='text-lg font-bold mb-4'>Confirm Deletion</h3>
+            <p className='text-red-600'>
+              Are you sure you want to delete this transaction?
+            </p>
+            <div className='mt-6 flex justify-end gap-3'>
+              <button
+                className='px-4 py-2 bg-gray-300 rounded-md'
+                onClick={closeDialog}>
+                Cancel
+              </button>
+              <button
+                className='px-4 py-2 bg-red-600 text-white rounded-md'
+                onClick={() => {
+                  handleDelete();
+                  closeDialog();
+                }}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

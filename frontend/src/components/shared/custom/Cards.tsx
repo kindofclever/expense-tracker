@@ -11,9 +11,18 @@ const Cards: React.FC = () => {
   const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
 
   const [filter, setFilter] = useState('');
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);
+  };
+
+  const openDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
   };
 
   const filteredTransactions = transactionsData?.transactions?.filter(
@@ -62,6 +71,29 @@ const Cards: React.FC = () => {
         <p className='text-2xl font-bold text-center w-full'>
           No transaction history found.
         </p>
+      )}
+      {isDialogOpen && (
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'>
+          <div className='bg-white p-6 rounded-md shadow-md'>
+            <h3 className='text-lg font-bold mb-4'>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this transaction?</p>
+            <div className='mt-6 flex justify-end gap-3'>
+              <button
+                className='px-4 py-2 bg-gray-300 rounded-md'
+                onClick={closeDialog}>
+                Cancel
+              </button>
+              <button
+                className='px-4 py-2 bg-red-600 text-white rounded-md'
+                onClick={() => {
+                  handleDelete();
+                  closeDialog();
+                }}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
