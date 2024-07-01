@@ -37,7 +37,7 @@ const Cards: React.FC = () => {
   return (
     <div className='w-full px-10 min-h-[40vh]'>
       <p className='text-5xl font-bold text-center my-10'>History</p>
-      {!transactionsLoading && transactionsData?.transactions?.length > 0 && (
+      {!transactionsLoading && transactionsData?.transactions?.length > 1 && (
         <input
           className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-5'
           id='filter'

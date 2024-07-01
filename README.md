@@ -65,3 +65,4 @@ and various other technologies for authentication and session management.
 - Imporve the pie chart to see more relevant information
 - Make it more responsive
 - Set up CI/CD
+- Cards pagination
