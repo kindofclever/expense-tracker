@@ -47,7 +47,7 @@ input CreateTransactionInput {
   category: Category!
   amount: Float!
   date: String!
-  location: String
+  location: String!
 }
 
 input UpdateTransactionInput {

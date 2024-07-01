@@ -82,6 +82,7 @@ const TransactionForm: React.FC = () => {
             <select
               className='block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
               id='paymentType'
+              required
               name='paymentType'>
               {Object.values(PaymentType).map((type) => (
                 <option
@@ -113,6 +114,7 @@ const TransactionForm: React.FC = () => {
             <select
               className='block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
               id='category'
+              required
               name='category'>
               {Object.values(Category).map((type) => (
                 <option
@@ -145,6 +147,7 @@ const TransactionForm: React.FC = () => {
             id='amount'
             name='amount'
             type='number'
+            required
             placeholder='150'
           />
         </div>
@@ -162,6 +165,7 @@ const TransactionForm: React.FC = () => {
             className='appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
             id='location'
             name='location'
+            required
             type='text'
             placeholder='St. Gallen'
           />
@@ -177,6 +181,7 @@ const TransactionForm: React.FC = () => {
           <input
             value={selectedDate}
             onChange={handleDateChange}
+            required
             type='date'
             name='date'
             id='date'
