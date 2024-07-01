@@ -1,6 +1,6 @@
-import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { Toaster } from 'react-hot-toast';
 
 import HomePage from './components/pages/HomePage';
 import LoginPage from './components/pages/LoginPage';
@@ -10,7 +10,6 @@ import TransactionPage from './components/pages/TransactionPage';
 import Header from './components/shared/custom/Header';
 
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user.query';
-import { Toaster } from 'react-hot-toast';
 
 const App: React.FC = () => {
   const { data } = useQuery(GET_AUTHENTICATED_USER);
