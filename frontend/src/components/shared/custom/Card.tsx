@@ -16,7 +16,7 @@ interface CardProps {
 }
 
 const categoryColorMap: { [key in CardProps['cardType']]: string } = {
-  saving: 'from-green-400 to-green-600',
+  saving: 'from-green-800 to-green-600',
   expense: 'from-pink-800 to-pink-600',
   investment: 'from-blue-700 to-blue-400',
 };

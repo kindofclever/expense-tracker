@@ -42,7 +42,7 @@ const App: React.FC = () => {
           element={<NotFoundPage />}
         />
       </Routes>
-      <Toaster />
+      <Toaster position='bottom-center' />
     </>
   );
 };
