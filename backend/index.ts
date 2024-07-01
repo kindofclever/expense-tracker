@@ -66,8 +66,14 @@ app.use(
         req,
         res,
         user: req.user,
-        login: req.login.bind(req),
-        logout: req.logout.bind(req),
+        login: (user: any) => new Promise((resolve, reject) => {
+          req.login(user, (err: any) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(user);
+          });
+        }), logout: req.logout.bind(req),
         getUser: () => req.user,
       };
     },

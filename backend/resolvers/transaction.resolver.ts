@@ -18,7 +18,6 @@ const transactionResolver: IResolvers = {
         });
         return transactions;
       } catch (err) {
-        console.error("Error getting transactions:", err);
         throw new Error("Error getting transactions");
       }
     },
@@ -29,7 +28,6 @@ const transactionResolver: IResolvers = {
         });
         return transaction;
       } catch (err) {
-        console.error("Error getting transaction:", err);
         throw new Error("Error getting transaction");
       }
     },
@@ -57,7 +55,6 @@ const transactionResolver: IResolvers = {
           totalAmount,
         }));
       } catch (err) {
-        console.error("Error in categoryStatistics:", err);
         throw new Error("Internal server error");
       }
     },
@@ -80,7 +77,6 @@ const transactionResolver: IResolvers = {
         });
         return newTransaction;
       } catch (err) {
-        console.error("Error creating transaction:", err);
         throw new Error("Error creating transaction");
       }
     },
@@ -98,7 +94,6 @@ const transactionResolver: IResolvers = {
         });
         return updatedTransaction;
       } catch (err) {
-        console.error("Error updating transaction:", err);
         throw new Error("Error updating transaction");
       }
     },
@@ -109,7 +104,6 @@ const transactionResolver: IResolvers = {
         });
         return deletedTransaction;
       } catch (err) {
-        console.error("Error deleting transaction:", err);
         throw new Error("Error deleting transaction");
       }
     },
@@ -122,7 +116,6 @@ const transactionResolver: IResolvers = {
         });
         return user;
       } catch (err) {
-        console.error("Error getting user:", err);
         throw new Error("Error getting user");
       }
     },

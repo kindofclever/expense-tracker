@@ -21,7 +21,6 @@ const userResolver: IResolvers = {
         const user = await context.getUser();
         return user;
       } catch (err) {
-        console.error("Error in authUser: ", err);
         throw new Error("Internal server error");
       }
     },
@@ -115,7 +114,6 @@ const userResolver: IResolvers = {
         });
         return transactions;
       } catch (err) {
-        console.error("Error in user.transactions resolver: ", err);
         throw new Error("Internal server error");
       }
     },

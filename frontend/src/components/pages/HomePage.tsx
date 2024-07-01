@@ -66,7 +66,10 @@ const HomePage: React.FC = () => {
       });
 
       setChartData((prev) => ({
-        labels: categories,
+        labels: categories.map(
+          (category) =>
+            category.charAt(0).toUpperCase() + category.slice(1) + 's'
+        ),
         datasets: [
           {
             ...prev.datasets[0],
