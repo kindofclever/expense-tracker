@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { useQuery } from '@apollo/client';
 import Card from './Card';
 import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
@@ -11,9 +11,13 @@ const Cards: React.FC = () => {
   const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
 
   const [filter, setFilter] = useState('');
+  const [isPending, startTransition] = useTransition();
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter(e.target.value);
+    const value = e.target.value;
+    startTransition(() => {
+      setFilter(value);
+    });
   };
 
   const filteredTransactions = transactionsData?.transactions?.filter(
@@ -46,6 +50,9 @@ const Cards: React.FC = () => {
           value={filter}
           onChange={handleFilterChange}
         />
+      )}
+      {isPending && (
+        <p className='text-center text-gray-500'>Updating transactions...</p>
       )}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20'>
         {!transactionsLoading &&
