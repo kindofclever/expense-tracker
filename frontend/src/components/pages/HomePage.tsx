@@ -54,14 +54,14 @@ const HomePage: React.FC = () => {
 
       categories.forEach((category) => {
         if (category === 'saving') {
-          backgroundColors.push('rgba(75, 192, 192)');
-          borderColors.push('rgba(75, 192, 192)');
+          backgroundColors.push('rgba(73, 109, 219)'); // royalBlue
+          borderColors.push('rgba(73, 109, 219)'); // royalBlue
         } else if (category === 'expense') {
-          backgroundColors.push('rgba(255, 99, 132)');
-          borderColors.push('rgba(255, 99, 132)');
+          backgroundColors.push('rgba(238, 132, 52)'); // orangeWheel
+          borderColors.push('rgba(238, 132, 52)'); // orangeWheel
         } else if (category === 'investment') {
-          backgroundColors.push('rgba(54, 162, 235)');
-          borderColors.push('rgba(54, 162, 235)');
+          backgroundColors.push('rgba(162, 0, 33)'); // madder
+          borderColors.push('rgba(162, 0, 33)'); // madder
         }
       });
 
@@ -82,6 +82,16 @@ const HomePage: React.FC = () => {
     }
   }, [transactionData]);
 
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          color: '#EEF1EF', // tw css white
+        },
+      },
+    },
+  };
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -97,8 +107,8 @@ const HomePage: React.FC = () => {
 
   return (
     <div className='flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center'>
-      <div className='flex items-center'>
-        <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text'>
+      <div className='flex flex-col md:flex-row items-center gap-y-7 md:gap-y-0 md:gap-x-4'>
+        <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 bg-gradient-to-r from-orangeWheel via-royalBlue to-madder inline-block text-transparent bg-clip-text'>
           Spend wisely, track wisely
         </p>
         {authUserData?.authUser?.profilePicture && (
@@ -110,20 +120,24 @@ const HomePage: React.FC = () => {
         )}
         {!loading && (
           <MdLogout
-            className='mx-2 w-5 h-5 cursor-pointer'
+            className='w-5 h-5 cursor-pointer'
             onClick={handleLogout}
             data-testid='logout-icon'
           />
         )}
         {loading && (
-          <div className='w-6 h-6 border-t-2 border-b-2 mx-2 rounded-full animate-spin'></div>
+          <div className='w-6 h-6 border-t-2 border-b-2 rounded-full animate-spin'></div>
         )}
       </div>
+
       <div className='flex flex-wrap w-full justify-center items-center gap-6'>
         {transactionData?.categoryStatistics &&
           transactionData.categoryStatistics.length > 0 && (
             <div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]'>
-              <Pie data={chartData} />
+              <Pie
+                data={chartData}
+                options={options}
+              />
             </div>
           )}
         <TransactionForm />

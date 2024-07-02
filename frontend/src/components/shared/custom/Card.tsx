@@ -16,9 +16,9 @@ interface CardProps {
 }
 
 const categoryColorMap: { [key in CardProps['cardType']]: string } = {
-  saving: 'from-green-800 to-green-600',
-  expense: 'from-pink-800 to-pink-600',
-  investment: 'from-blue-700 to-blue-400',
+  saving: 'bg-royalBlue',
+  expense: 'bg-orangeWheel',
+  investment: 'bg-madder',
 };
 
 const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
@@ -57,12 +57,10 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
   if (loading) return <h2>Loading...</h2>;
 
   return (
-    <div className={`rounded-md p-4 bg-gradient-to-br ${cardClass}`}>
+    <div className={`rounded-md p-4 ${cardClass}`}>
       <div className='flex flex-col gap-3'>
         <div className='flex flex-row items-center justify-between'>
-          <h2 className='text-lg font-bold text-white capitalize'>
-            {cardType}
-          </h2>
+          <h2 className='text-lg font-bold  capitalize'>{cardType}</h2>
           <div className='flex items-center gap-2'>
             <FaTrash
               className='cursor-pointer'
@@ -78,24 +76,24 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
             </Link>
           </div>
         </div>
-        <p className='text-white flex items-center gap-1'>
+        <p className=' flex items-center gap-1'>
           <MdOutlineDescription />
           Description: {description}
         </p>
-        <p className='text-white flex items-center gap-1'>
+        <p className=' flex items-center gap-1'>
           <MdOutlinePayments />
           Payment Type: {paymentType}
         </p>
-        <p className='text-white flex items-center gap-1'>
+        <p className=' flex items-center gap-1'>
           <FaSackDollar />
           Amount: {amount}
         </p>
-        <p className='text-white flex items-center gap-1'>
+        <p className=' flex items-center gap-1'>
           <FaLocationDot />
           Location: {location}
         </p>
         <div className='flex justify-between items-center'>
-          <p className='text-xs text-black font-bold'>
+          <p className='text-xs font-bold'>
             {dayjs(date).format('DD.MM.YYYY')}
           </p>
           <img
@@ -107,20 +105,18 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
       </div>
 
       {isDialogOpen && (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'>
-          <div className='bg-white p-6 rounded-md shadow-md'>
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-80'>
+          <div className='bg-orangeWheel p-6 rounded-md shadow-md'>
             <h3 className='text-lg font-bold mb-4'>Confirm Deletion</h3>
-            <p className='text-red-600'>
-              Are you sure you want to delete this transaction?
-            </p>
+            <p>Are you sure you want to delete this transaction?</p>
             <div className='mt-6 flex justify-end gap-3'>
               <button
-                className='px-4 py-2 bg-gray-300 rounded-md'
+                className='px-4 py-2 bg-royalBlue rounded-md'
                 onClick={closeDialog}>
                 Cancel
               </button>
               <button
-                className='px-4 py-2 bg-red-600 text-white rounded-md'
+                className='px-4 py-2 bg-red-600  rounded-md'
                 onClick={() => {
                   handleDelete();
                   closeDialog();

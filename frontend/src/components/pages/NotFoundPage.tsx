@@ -1,7 +1,7 @@
 const NotFoundPage: React.FC = () => {
   return (
     <section>
-      <div className='text-white'>
+      <div className=''>
         <div className='flex h-screen'>
           <div className='m-auto text-center'>
             <div>
@@ -15,7 +15,7 @@ const NotFoundPage: React.FC = () => {
             </p>
             <a
               href='/'
-              className='bg-transparent hover:bg-[#F6009B] text-[#F6009B] hover:text-white rounded shadow hover:shadow-lg py-2 px-4 border border-[#F6009B] hover:border-transparent'>
+              className='bg-transparent hover:bg-[#F6009B] text-[#F6009B] hover: rounded shadow hover:shadow-lg py-2 px-4 border border-[#F6009B] hover:border-transparent'>
               Take me home
             </a>
           </div>

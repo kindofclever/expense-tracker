@@ -11,6 +11,15 @@ export const content = ["./src/**/*.{ts,tsx}"];
 export const darkMode = "class";
 export const theme = {
   extend: {
+    colors: {
+      'orangeWheel': '#EE8434',
+      'iceBlue': '#97F9F9',
+      'madder': '#A20021',
+      'glaucous': '#717EC3',
+      'royalBlue': '#496DDB',
+      'black': '#000500',
+      'white': '#EEF1EF'
+    },
     animation: {
       spotlight: "spotlight 2s ease .75s 1 forwards",
     },
