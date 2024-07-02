@@ -44,7 +44,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
         </span>
       </label>
       <label
-        className='mt-px font-light  cursor-pointer select-none'
+        className='mt-px font-light text-black cursor-pointer select-none'
         htmlFor={id}>
         {label}
       </label>
