@@ -25,7 +25,7 @@ and various other technologies for authentication and session management.
 - Express.js
 - TypeScript
 - GraphQL
-- MongoDB
+- MySQL
 - Prisma
 - Passport.js
 - bcryptjs
@@ -52,8 +52,8 @@ and various other technologies for authentication and session management.
 ### Prerequisites
 
 - Node.js (v20.15.0)
-- MongoDB instance
-- npm (Node Package Manager)
+- MySQL instance (for example on digital ocean)
+- npm (Node Package Manager) or another system like yarn or npmn 
 
 ## TODOs:
 
