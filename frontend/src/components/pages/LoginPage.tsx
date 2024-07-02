@@ -73,15 +73,13 @@ const LoginPage: React.FC = () => {
                 value={loginData.password}
                 onChange={handleChange}
               />
-              <div>
-                <Button
-                  type='submit'
-                  variant='black'
-                  className='w-full'
-                  disabled={loading}>
-                  {loading ? 'Loading...' : 'Login'}
-                </Button>
-              </div>
+              <Button
+                type='submit'
+                variant='black'
+                className='w-full'
+                disabled={loading}>
+                {loading ? 'Loading...' : 'Login'}
+              </Button>
             </form>
             <div className='mt-4 text-sm text-gray-600 text-center'>
               <p>

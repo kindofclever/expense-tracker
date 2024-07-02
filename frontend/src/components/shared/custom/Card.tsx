@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaLocationDot, FaSackDollar, FaTrash } from 'react-icons/fa6';
 import { MdOutlineDescription, MdOutlinePayments } from 'react-icons/md';
 import { HiPencilAlt } from 'react-icons/hi';
@@ -8,7 +8,7 @@ import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
 import { DELETE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
 import dayjs from 'dayjs';
-import Button from './Button';
+import ConfirmationDialog from './ConfirmationDialog';
 
 interface CardProps {
   cardType: Category;
@@ -49,10 +49,6 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
 
   const openDialog = () => {
     setDialogOpen(true);
-  };
-
-  const closeDialog = () => {
-    setDialogOpen(false);
   };
 
   if (loading) return <h2>Loading...</h2>;
@@ -104,30 +100,13 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
           />
         </div>
       </div>
-
-      {isDialogOpen && (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-80'>
-          <div className='bg-orangeWheel p-6 rounded-md shadow-md'>
-            <h3 className='text-lg font-bold mb-4'>Confirm Deletion</h3>
-            <p>Are you sure you want to delete this transaction?</p>
-            <div className='mt-6 flex justify-end gap-3'>
-              <Button
-                variant='secondary'
-                onClick={closeDialog}>
-                Cancel
-              </Button>
-              <Button
-                variant='form'
-                onClick={() => {
-                  handleDelete();
-                  closeDialog();
-                }}>
-                Delete
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onConfirm={handleDelete}
+        title='Confirm Deletion'
+        message='Are you sure you want to delete this transaction?'
+      />
     </div>
   );
 };
