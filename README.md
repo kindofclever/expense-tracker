@@ -57,8 +57,8 @@ and various other technologies for authentication and session management.
 
 ## TODOs:
 
-- Add functionality to filter the expense/investment/savings cards
-- Add favicon
+- ~~Add functionality to filter the expense/investment/savings cards~~
+- ~~Add favicon~~
 - Add user page and give the users possibilities to customize their profile
 - Add language support
 - Add more categories to spending
@@ -67,4 +67,4 @@ and various other technologies for authentication and session management.
 - Set up CI/CD
 - Cards pagination
 - SEO
-- Style it better and use reusable colours from tailwind config
+- ~~Style it better and use reusable colours from tailwind config~~
