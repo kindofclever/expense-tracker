@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import InputField from '../shared/custom/InputField';
 import RadioButton from '../shared/custom/RadioButton';
 import { SIGN_UP } from '../../graphql/mutations/user.mutation';
+import Button from '../shared/custom/Button';
 
 interface SignUpData {
   name: string;
@@ -118,11 +119,13 @@ const SignUpPage: React.FC = () => {
                 />
               </div>
               <div>
-                <button
+                <Button
                   type='submit'
-                  className='w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed'>
-                  {loading ? 'Loading...' : 'Sign Up'}
-                </button>
+                  variant='black'
+                  className='w-full'
+                  disabled={loading}>
+                  {loading ? 'Loading...' : 'Sign up'}
+                </Button>
               </div>
             </form>
             <div className='mt-4 text-sm text-gray-600 text-center'>

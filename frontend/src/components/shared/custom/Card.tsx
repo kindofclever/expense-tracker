@@ -8,6 +8,7 @@ import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
 import { DELETE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
 import dayjs from 'dayjs';
+import Button from './Button';
 
 interface CardProps {
   cardType: Category;
@@ -110,19 +111,19 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
             <h3 className='text-lg font-bold mb-4'>Confirm Deletion</h3>
             <p>Are you sure you want to delete this transaction?</p>
             <div className='mt-6 flex justify-end gap-3'>
-              <button
-                className='px-4 py-2 bg-royalBlue rounded-md'
+              <Button
+                variant='secondary'
                 onClick={closeDialog}>
                 Cancel
-              </button>
-              <button
-                className='px-4 py-2 bg-red-600  rounded-md'
+              </Button>
+              <Button
+                variant='form'
                 onClick={() => {
                   handleDelete();
                   closeDialog();
                 }}>
                 Delete
-              </button>
+              </Button>
             </div>
           </div>
         </div>

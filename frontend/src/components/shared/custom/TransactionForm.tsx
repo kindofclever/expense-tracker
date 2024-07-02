@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import { Category, PaymentType } from '../../../interfaces/interfaces';
 import { CREATE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
+import Button from './Button';
 
 const TransactionForm: React.FC = () => {
   const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
@@ -190,12 +191,12 @@ const TransactionForm: React.FC = () => {
         </div>
       </div>
       {/* SUBMIT BUTTON */}
-      <button
-        className=' font-bold w-full rounded px-4 py-2 bg-orangeWheel hover:bg-madder disabled:opacity-70 disabled:cursor-not-allowed'
+      <Button
         type='submit'
+        variant='primary'
         disabled={loading}>
         {loading ? 'Loading...' : 'Add Transaction'}
-      </button>
+      </Button>
     </form>
   );
 };

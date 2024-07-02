@@ -39,7 +39,7 @@ const Cards: React.FC = () => {
       <p className='text-5xl font-bold text-center my-10'>History</p>
       {!transactionsLoading && transactionsData?.transactions?.length > 1 && (
         <input
-          className='appearance-none focus:focus:text-blackfda block w-full bg-royalBlue border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white mb-5'
+          className='appearance-none focus:focus:text-black block w-full bg-royalBlue border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white mb-5'
           id='filter'
           type='text'
           placeholder='Search for transactions'

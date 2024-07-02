@@ -15,6 +15,7 @@ import {
   Transaction,
 } from '../../interfaces/interfaces';
 import TransactionFormSkeleton from '../shared/skeletons/TransactionFormSkeleton';
+import Button from '../shared/custom/Button';
 
 const TransactionPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -233,7 +234,7 @@ const TransactionPage: React.FC = () => {
               type='date'
               name='date'
               id='date'
-              className='appearance-none block w-full bg-royalBlue border border-royalBlue rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
+              className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
               placeholder='Select date'
               value={formData.date || ''}
               onChange={handleInputChange}
@@ -241,12 +242,13 @@ const TransactionPage: React.FC = () => {
           </div>
         </div>
         {/* SUBMIT BUTTON */}
-        <button
-          className=' font-bold w-full rounded px-4 py-2 bg-orangeWheel hover:bg-madder'
+        <Button
           type='submit'
+          variant='primary'
+          className='font-bold w-full rounded px-4 py-2'
           disabled={loadingUpdate}>
           {loadingUpdate ? 'Updating...' : 'Update Transaction'}
-        </button>
+        </Button>
       </form>
     </div>
   );
