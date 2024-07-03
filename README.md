@@ -53,7 +53,7 @@ and various other technologies for authentication and session management.
 
 - Node.js (v20.15.0)
 - MySQL instance (for example on digital ocean)
-- npm (Node Package Manager) or another system like yarn or npmn 
+- npm (Node Package Manager) or another system like yarn or npmn
 
 ## TODOs:
 
@@ -64,6 +64,7 @@ and various other technologies for authentication and session management.
 - Add more categories to spending
 - Imporve the pie chart to see more relevant information
 - Make it more responsive
+- ~~Make sure no negative amouints of transactions can be entered~~
 - Set up CI/CD
 - Cards pagination
 - SEO
