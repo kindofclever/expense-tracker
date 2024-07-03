@@ -58,6 +58,11 @@ const TransactionPage: React.FC = () => {
     e.preventDefault();
     const amount = parseFloat(formData.amount as unknown as string);
 
+    if (amount <= 0) {
+      toast.error('Amount must be a positive number');
+      return;
+    }
+
     try {
       await updateTransaction({
         variables: {
@@ -83,6 +88,10 @@ const TransactionPage: React.FC = () => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    if (name === 'amount' && parseFloat(value) < 0) {
+      toast.error('Amount cannot be negative');
+      return;
+    }
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -200,6 +209,7 @@ const TransactionPage: React.FC = () => {
               placeholder='150'
               value={formData.amount?.toString() || ''}
               onChange={handleInputChange}
+              min='0'
             />
           </div>
         </div>

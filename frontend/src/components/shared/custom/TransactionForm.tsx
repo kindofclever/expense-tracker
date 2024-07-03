@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -30,6 +30,11 @@ const TransactionForm: React.FC = () => {
       date: formData.get('date') as string,
     };
 
+    if (transactionData.amount <= 0) {
+      toast.error('Amount must be a positive number');
+      return;
+    }
+
     try {
       await createTransaction({ variables: { input: transactionData } });
       form.reset();
@@ -44,7 +49,17 @@ const TransactionForm: React.FC = () => {
     }
   };
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === 'amount' && parseFloat(value) < 0) {
+      toast.error('Amount cannot be negative');
+      return;
+    }
+  };
+
+  const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
   };
 
@@ -56,12 +71,12 @@ const TransactionForm: React.FC = () => {
       <div className='flex flex-wrap'>
         <div className='w-full'>
           <label
-            className='block uppercase tracking-wide  text-xs font-bold mb-2'
+            className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='description'>
             Transaction
           </label>
           <input
-            className='appearance-none block w-full focus:text-black bg-royalBlue  border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
+            className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
             id='description'
             name='description'
             type='text'
@@ -74,13 +89,13 @@ const TransactionForm: React.FC = () => {
       <div className='flex flex-wrap gap-3'>
         <div className='w-full flex-1 mb-6 md:mb-0'>
           <label
-            className='block uppercase tracking-wide  text-xs font-bold mb-2'
+            className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='paymentType'>
             Payment Type
           </label>
           <div className='relative'>
             <select
-              className='block appearance-none w-full focus:text-black bg-royalBlue border border-royalBlue  py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-glaucouse'
+              className='block appearance-none w-full focus:text-black bg-royalBlue border border-royalBlue py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-glaucouse'
               id='paymentType'
               required
               name='paymentType'>
@@ -106,13 +121,13 @@ const TransactionForm: React.FC = () => {
         {/* CATEGORY */}
         <div className='w-full flex-1 mb-6 md:mb-0'>
           <label
-            className='block uppercase tracking-wide  text-xs font-bold mb-2'
+            className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='category'>
             Category
           </label>
           <div className='relative'>
             <select
-              className='block appearance-none w-full focus:text-black bg-royalBlue border border-royalBlue  py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-white'
+              className='block appearance-none w-full focus:text-black bg-royalBlue border border-royalBlue py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-white'
               id='category'
               required
               name='category'>
@@ -149,6 +164,8 @@ const TransactionForm: React.FC = () => {
             type='number'
             required
             placeholder='150'
+            min='0'
+            onChange={handleInputChange}
           />
         </div>
       </div>
@@ -162,7 +179,7 @@ const TransactionForm: React.FC = () => {
             Location
           </label>
           <input
-            className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
+            className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
             id='location'
             name='location'
             required
