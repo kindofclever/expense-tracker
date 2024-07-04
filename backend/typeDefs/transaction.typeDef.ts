@@ -5,7 +5,7 @@ type Transaction {
   description: String!
   paymentType: PaymentType!
   category: Category!
-  amount: Float!
+  amount: Float 
   location: String!
   date: String!
   user: User!
@@ -45,7 +45,7 @@ input CreateTransactionInput {
   description: String!
   paymentType: PaymentType!
   category: Category!
-  amount: Float!
+  amount: Float
   date: String!
   location: String!
 }

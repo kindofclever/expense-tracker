@@ -17,7 +17,7 @@ const transactionResolver: IResolvers = {
           where: { userId },
         });
         return transactions;
-      } catch (err) {
+      } catch (err: unknown) {
         throw new Error("Error getting transactions");
       }
     },
@@ -28,7 +28,6 @@ const transactionResolver: IResolvers = {
         });
         return transaction;
       } catch (err: unknown) {
-        console.error("Error getting transaction", err);
         throw new Error("Error getting transaction");
       }
     },
@@ -55,7 +54,7 @@ const transactionResolver: IResolvers = {
           category,
           totalAmount,
         }));
-      } catch (err) {
+      } catch (err: unknown) {
         throw new Error("Internal server error");
       }
     },
@@ -67,6 +66,13 @@ const transactionResolver: IResolvers = {
         const user = await context.getUser();
         if (!user) throw new Error("Unauthorized");
 
+        const { description, paymentType, category, amount, location, date } = input;
+        if (!description || !paymentType || !category || amount === undefined || !location || !date) {
+          throw new Error("All fields must be filled out");
+        }
+
+        if (amount <= 0) throw new Error("Amount must be a positive number");
+
         const newTransaction = await prisma.transaction.create({
           data: {
             ...input,
@@ -77,12 +83,25 @@ const transactionResolver: IResolvers = {
           },
         });
         return newTransaction;
-      } catch (err) {
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          if (err.message === "Unauthorized" || err.message === "Amount must be a positive number" || err.message === "All fields must be filled out") {
+            throw err;
+          }
+        }
         throw new Error("Error creating transaction");
       }
     },
+
     updateTransaction: async (_, { input }: { input: UpdateTransactionInput }): Promise<Transaction> => {
       try {
+        const { description, paymentType, category, amount, location, date } = input;
+        if (!description || !paymentType || !category || amount === undefined || !location || !date) {
+          throw new Error("All fields must be filled out");
+        }
+
+        if (amount <= 0) throw new Error("Amount must be a positive number");
+
         const updatedTransaction = await prisma.transaction.update({
           where: { id: parseInt(input.transactionId) },
           data: {
@@ -96,10 +115,15 @@ const transactionResolver: IResolvers = {
         });
         return updatedTransaction;
       } catch (err: unknown) {
-        console.error('error updating transaction: ' + err);
+        if (err instanceof Error) {
+          if (err.message === "Amount must be a positive number" || err.message === "All fields must be filled out") {
+            throw err;
+          }
+        }
         throw new Error("Error updating transaction");
       }
     },
+
     deleteTransaction: async (_, { transactionId }: { transactionId: string }): Promise<Transaction> => {
       try {
         const deletedTransaction = await prisma.transaction.delete({

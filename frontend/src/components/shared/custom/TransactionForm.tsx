@@ -30,11 +30,6 @@ const TransactionForm: React.FC = () => {
       date: formData.get('date') as string,
     };
 
-    if (transactionData.amount <= 0) {
-      toast.error('Amount must be a positive number');
-      return;
-    }
-
     try {
       await createTransaction({ variables: { input: transactionData } });
       form.reset();
@@ -80,7 +75,6 @@ const TransactionForm: React.FC = () => {
             id='description'
             name='description'
             type='text'
-            required
             placeholder='Rent, Groceries, Salary, etc.'
           />
         </div>
@@ -97,7 +91,6 @@ const TransactionForm: React.FC = () => {
             <select
               className='block appearance-none w-full focus:text-black bg-royalBlue border border-royalBlue py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-glaucouse'
               id='paymentType'
-              required
               name='paymentType'>
               {Object.values(PaymentType).map((type) => (
                 <option
@@ -129,7 +122,6 @@ const TransactionForm: React.FC = () => {
             <select
               className='block appearance-none w-full focus:text-black bg-royalBlue border border-royalBlue py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-white'
               id='category'
-              required
               name='category'>
               {Object.values(Category).map((type) => (
                 <option
@@ -162,9 +154,7 @@ const TransactionForm: React.FC = () => {
             id='amount'
             name='amount'
             type='number'
-            required
             placeholder='150'
-            min='0'
             onChange={handleInputChange}
           />
         </div>
@@ -182,7 +172,6 @@ const TransactionForm: React.FC = () => {
             className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
             id='location'
             name='location'
-            required
             type='text'
             placeholder='St. Gallen'
           />
@@ -198,7 +187,6 @@ const TransactionForm: React.FC = () => {
           <input
             value={selectedDate}
             onChange={handleDateChange}
-            required
             type='date'
             name='date'
             id='date'
