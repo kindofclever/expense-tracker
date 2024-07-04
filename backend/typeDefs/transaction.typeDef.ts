@@ -5,7 +5,7 @@ type Transaction {
   description: String!
   paymentType: PaymentType!
   category: Category!
-  amount: Float 
+  amount: Float
   location: String!
   date: String!
   user: User!
@@ -24,8 +24,13 @@ enum Category {
   expense
 }
 
-type Query {
+type TransactionPage {
   transactions: [Transaction!]
+  total: Int!
+}
+
+type Query {
+  transactions(offset: Int!, limit: Int!): TransactionPage!
   transaction(transactionId: ID!): Transaction
   categoryStatistics: [CategoryStatistics!]
 }
@@ -59,7 +64,6 @@ input UpdateTransactionInput {
   location: String
   date: String
 }
-
 `
 
 export default transactionTypeDef

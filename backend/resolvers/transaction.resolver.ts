@@ -1,13 +1,12 @@
 import { PrismaClient, Transaction, User } from '@prisma/client';
 import { IResolvers } from '@graphql-tools/utils';
-
 import { CreateTransactionInput, UpdateTransactionInput } from '../interfaces/interfaces.js';
 
 const prisma = new PrismaClient();
 
 const transactionResolver: IResolvers = {
   Query: {
-    transactions: async (_, __, context: any): Promise<Transaction[]> => {
+    transactions: async (_, { offset, limit }, context: any) => {
       try {
         const user = await context.getUser();
         if (!user) throw new Error("Unauthorized");
@@ -15,9 +14,19 @@ const transactionResolver: IResolvers = {
 
         const transactions = await prisma.transaction.findMany({
           where: { userId },
+          skip: offset,
+          take: limit,
+          orderBy: { date: 'desc' },
         });
-        return transactions;
-      } catch (err: unknown) {
+
+        const totalTransactions = await prisma.transaction.count({ where: { userId } });
+
+        return {
+          transactions,
+          total: totalTransactions,
+        };
+      } catch (err) {
+        console.error('Error fetching transactions:', err);
         throw new Error("Error getting transactions");
       }
     },
@@ -27,7 +36,8 @@ const transactionResolver: IResolvers = {
           where: { id: parseInt(transactionId) },
         });
         return transaction;
-      } catch (err: unknown) {
+      } catch (err) {
+        console.error('Error fetching transaction:', err);
         throw new Error("Error getting transaction");
       }
     },
@@ -54,11 +64,11 @@ const transactionResolver: IResolvers = {
           category,
           totalAmount,
         }));
-      } catch (err: unknown) {
+      } catch (err) {
+        console.error('Error fetching category statistics:', err);
         throw new Error("Internal server error");
       }
     },
-
   },
   Mutation: {
     createTransaction: async (_, { input }: { input: CreateTransactionInput }, context: any): Promise<Transaction> => {
@@ -75,51 +85,45 @@ const transactionResolver: IResolvers = {
 
         const newTransaction = await prisma.transaction.create({
           data: {
-            ...input,
+            description,
+            paymentType,
+            category,
+            amount,
+            date,
+            location: location || "",
             user: {
               connect: { id: user.id },
             },
-            location: input.location || "",
           },
         });
         return newTransaction;
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          if (err.message === "Unauthorized" || err.message === "Amount must be a positive number" || err.message === "All fields must be filled out") {
-            throw err;
-          }
-        }
+      } catch (err) {
+        console.error('Error creating transaction:', err);
         throw new Error("Error creating transaction");
       }
     },
 
     updateTransaction: async (_, { input }: { input: UpdateTransactionInput }): Promise<Transaction> => {
       try {
-        const { description, paymentType, category, amount, location, date } = input;
-        if (!description || !paymentType || !category || amount === undefined || !location || !date) {
-          throw new Error("All fields must be filled out");
+        const { transactionId, description, paymentType, category, amount, location, date } = input;
+        if (!transactionId || (!description && !paymentType && !category && !amount && !location && !date)) {
+          throw new Error("No fields to update");
         }
 
-        if (amount <= 0) throw new Error("Amount must be a positive number");
-
         const updatedTransaction = await prisma.transaction.update({
-          where: { id: parseInt(input.transactionId) },
+          where: { id: parseInt(transactionId) },
           data: {
-            amount: input.amount,
-            category: input.category,
-            description: input.description,
-            date: input.date,
-            location: input.location,
-            paymentType: input.paymentType
+            description,
+            paymentType,
+            category,
+            amount,
+            location,
+            date,
           },
         });
         return updatedTransaction;
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          if (err.message === "Amount must be a positive number" || err.message === "All fields must be filled out") {
-            throw err;
-          }
-        }
+      } catch (err) {
+        console.error('Error updating transaction:', err);
         throw new Error("Error updating transaction");
       }
     },
@@ -131,6 +135,7 @@ const transactionResolver: IResolvers = {
         });
         return deletedTransaction;
       } catch (err) {
+        console.error('Error deleting transaction:', err);
         throw new Error("Error deleting transaction");
       }
     },
@@ -143,6 +148,7 @@ const transactionResolver: IResolvers = {
         });
         return user;
       } catch (err) {
+        console.error('Error fetching user:', err);
         throw new Error("Error getting user");
       }
     },
