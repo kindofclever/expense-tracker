@@ -23,9 +23,7 @@ const HomePage: React.FC = () => {
   );
   const { data: authUserData } = useQuery<AuthUserData>(GET_AUTHENTICATED_USER);
 
-  const [logout, { loading, client }] = useMutation(LOGOUT, {
-    refetchQueries: ['GetAuthenticatedUser'],
-  });
+  const [logout, { loading, client }] = useMutation(LOGOUT);
 
   const [chartData, setChartData] = useState({
     labels: [] as string[],

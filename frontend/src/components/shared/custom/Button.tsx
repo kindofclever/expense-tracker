@@ -20,8 +20,8 @@ const Button: React.FC<ButtonProps> = ({
   const variantStyles = {
     primary: 'bg-orangeWheel hover:bg-madder',
     secondary: 'bg-royalBlue hover:bg-iceBlue',
-    form: 'bg-blue-500 hover:bg-blue-700 border border-blue-600 text-lg',
-    danger: 'bg-red-600 hover:bg-red-700',
+    form: 'bg-royalBlue hover:bg-iceBlue border border-royalBlue text-lg',
+    danger: 'bg-madder hover:bg-orangeWheel',
     black:
       'bg-black text-white hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed',
   };

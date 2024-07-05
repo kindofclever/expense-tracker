@@ -3,16 +3,16 @@ import { Toaster, ToastBar } from 'react-hot-toast';
 const CustomToaster = () => {
   return (
     <Toaster
-      position='bottom-center'
+      position='top-center'
       toastOptions={{
         success: {
           style: {
-            background: '#496DDB', // royalBlue
+            background: '#97F9F9', // royalBlue
             color: '#EEF1EF', // white
           },
           iconTheme: {
             primary: '#EEF1EF', // white
-            secondary: '#496DDB', // royalBlue
+            secondary: '#97F9F9', // royalBlue
           },
         },
         error: {

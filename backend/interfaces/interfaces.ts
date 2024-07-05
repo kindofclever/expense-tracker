@@ -47,7 +47,7 @@ export interface CreateTransactionInput {
   category: Category;
   amount: number;
   date: string;
-  location?: string;
+  location: string;
 }
 
 export interface UpdateTransactionInput {
