@@ -72,6 +72,7 @@ export interface TransactionStatisticsData {
 export interface AuthUser {
   id: string;
   profilePicture: string;
+  username: string;
 }
 
 export interface AuthUserData {

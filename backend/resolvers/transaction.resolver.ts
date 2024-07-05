@@ -6,10 +6,10 @@ const prisma = new PrismaClient();
 
 const transactionResolver: IResolvers = {
   Query: {
-    transactions: async (_, { offset, limit, filter }, context: any) => {
+    transactions: async (_, { offset, limit, filter }, context) => {
       try {
         const user = await context.getUser();
-        // if (!user) throw new Error("Unauthorized");
+        if (!user) throw new Error("Unauthorized");
         const userId = user.id;
 
         // Helper function to check for partial matches

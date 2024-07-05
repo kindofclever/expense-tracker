@@ -7,6 +7,7 @@ import NotFoundPage from './components/pages/NotFoundPage';
 import SignUpPage from './components/pages/SignUpPage';
 import TransactionPage from './components/pages/TransactionPage';
 import Header from './components/shared/custom/Header';
+import UserPage from './components/pages/UserPage';
 
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user.query';
 import CustomToaster from './components/shared/custom/CustomToaster';
@@ -25,6 +26,10 @@ const App: React.FC = () => {
         <Route
           path='/login'
           element={!data?.authUser ? <LoginPage /> : <Navigate to='/' />}
+        />
+        <Route
+          path='/users/:id'
+          element={data?.authUser ? <UserPage /> : <Navigate to='/' />}
         />
         <Route
           path='/signup'

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { MdLogout } from 'react-icons/md';
@@ -14,6 +15,7 @@ import {
   TransactionStatisticsData,
   AuthUserData,
 } from '../../interfaces/interfaces';
+import SubHeader from '../shared/custom/SubHeader';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -90,6 +92,8 @@ const HomePage: React.FC = () => {
     },
   };
 
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -106,14 +110,16 @@ const HomePage: React.FC = () => {
   return (
     <div className='flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center'>
       <div className='flex flex-col md:flex-row items-center gap-y-7 md:gap-y-0 md:gap-x-4'>
-        <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 bg-gradient-to-r from-orangeWheel via-royalBlue to-madder inline-block text-transparent bg-clip-text'>
-          Spend wisely, track wisely
-        </p>
+        <div className='flex flex-col items-start'>
+          <SubHeader text={`Hello ${authUserData?.authUser.username},`} />
+          <SubHeader text='nice to have you here' />
+        </div>
         {authUserData?.authUser?.profilePicture && (
           <img
             src={authUserData.authUser.profilePicture}
             className='w-11 h-11 rounded-full border cursor-pointer'
             alt='Avatar'
+            onClick={() => navigate(`/users/${authUserData.authUser.id}`)}
           />
         )}
         {!loading && (

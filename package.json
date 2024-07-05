@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend && tsc",
     "start": "node ./dist/index.js",
-    "dev": "nodemon --watch 'backend/**/*' -e ts --exec 'node --loader ts-node/esm ./backend/index.ts'"
+    "dev": "nodemon --watch 'backend/**/*' -e ts --exec 'node --experimental-loader ./register-loader.mjs'"
   },
   "author": "Sandra Gufler",
   "license": "ISC",
