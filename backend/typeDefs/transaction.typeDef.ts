@@ -30,7 +30,7 @@ type TransactionPage {
 }
 
 type Query {
-  transactions(offset: Int!, limit: Int!): TransactionPage!
+  transactions(offset: Int!, limit: Int!, filter: String): TransactionPage!
   transaction(transactionId: ID!): Transaction
   categoryStatistics: [CategoryStatistics!]
 }

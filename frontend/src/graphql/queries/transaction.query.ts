@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_TRANSACTIONS = gql`
-  query GetTransactions($offset: Int!, $limit: Int!) {
-    transactions(offset: $offset, limit: $limit) {
+  query GetTransactions($offset: Int!, $limit: Int!, $filter: String) {
+    transactions(offset: $offset, limit: $limit, filter: $filter) {
       transactions {
         id
         description

@@ -1,72 +1,48 @@
 import { PrismaClient, Transaction, User } from '@prisma/client';
 import { IResolvers } from '@graphql-tools/utils';
-import { CreateTransactionInput, UpdateTransactionInput } from '../interfaces/interfaces.js';
+import { Category, CreateTransactionInput, PaymentType, UpdateTransactionInput } from '../interfaces/interfaces.js';
 
 const prisma = new PrismaClient();
 
 const transactionResolver: IResolvers = {
   Query: {
-    transactions: async (_, { offset, limit }, context: any) => {
+    transactions: async (_, { offset, limit, filter }, context: any) => {
       try {
         const user = await context.getUser();
         if (!user) throw new Error("Unauthorized");
         const userId = user.id;
 
+        const filterConditions: any = filter
+          ? {
+            OR: [
+              { description: { contains: filter } },
+              { location: { contains: filter } },
+              { date: { contains: filter } },
+              ...(Object.values(PaymentType).includes(filter) ? [{ paymentType: { equals: filter } }] : []),
+              ...(Object.values(Category).includes(filter) ? [{ category: { equals: filter } }] : []),
+              ...(isNaN(Number(filter)) ? [] : [{ amount: { equals: Number(filter) } }])
+            ],
+          }
+          : {};
+
         const transactions = await prisma.transaction.findMany({
-          where: { userId },
+          where: { userId, ...filterConditions },
           skip: offset,
           take: limit,
-          orderBy: { date: 'desc' },
+          orderBy: { date: "desc" },
         });
 
-        const totalTransactions = await prisma.transaction.count({ where: { userId } });
+        const totalTransactions = await prisma.transaction.count({
+          where: { userId, ...filterConditions },
+        });
 
         return {
           transactions,
           total: totalTransactions,
         };
       } catch (err) {
-        console.error('Error fetching transactions:', err);
+        console.error("Error fetching transactions:", err);
         throw new Error("Error getting transactions");
-      }
-    },
-    transaction: async (_, { transactionId }: { transactionId: string }): Promise<Transaction | null> => {
-      try {
-        const transaction = await prisma.transaction.findUnique({
-          where: { id: parseInt(transactionId) },
-        });
-        return transaction;
-      } catch (err) {
-        console.error('Error fetching transaction:', err);
-        throw new Error("Error getting transaction");
-      }
-    },
-    categoryStatistics: async (_, __, context: any) => {
-      try {
-        const user = await context.getUser();
-        if (!user) throw new Error("Unauthorized");
-
-        const userId = user.id;
-        const transactions = await prisma.transaction.findMany({
-          where: { userId },
-        });
-
-        const categoryMap: { [key: string]: number } = {};
-
-        transactions.forEach((transaction) => {
-          if (!categoryMap[transaction.category]) {
-            categoryMap[transaction.category] = 0;
-          }
-          categoryMap[transaction.category] += transaction.amount;
-        });
-
-        return Object.entries(categoryMap).map(([category, totalAmount]) => ({
-          category,
-          totalAmount,
-        }));
-      } catch (err) {
-        console.error('Error fetching category statistics:', err);
-        throw new Error("Internal server error");
       }
     },
   },
