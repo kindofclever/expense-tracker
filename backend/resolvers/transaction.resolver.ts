@@ -12,7 +12,6 @@ const transactionResolver: IResolvers = {
         if (!user) throw new Error("Unauthorized");
         const userId = user.id;
 
-
         // Helper function to check for partial matches
         const getPartialEnumMatches = (filter, enumObject) => {
           return Object.values(enumObject).filter(enumValue =>
@@ -23,12 +22,15 @@ const transactionResolver: IResolvers = {
         const paymentTypeMatches = getPartialEnumMatches(filter, PaymentType);
         const categoryMatches = getPartialEnumMatches(filter, Category);
 
+        // Handle partial date match
+        const dateCondition = filter ? { date: { contains: filter } } : {};
+
         const filterConditions: any = filter
           ? {
             OR: [
               { description: { contains: filter } },
               { location: { contains: filter } },
-              { date: { contains: filter } },
+              ...(dateCondition.date.contains ? [{ date: dateCondition.date }] : []),
               ...(paymentTypeMatches.length > 0 ? [{ paymentType: { in: paymentTypeMatches } }] : []),
               ...(categoryMatches.length > 0 ? [{ category: { in: categoryMatches } }] : []),
               ...(isNaN(Number(filter)) ? [] : [{ amount: { equals: Number(filter) } }])

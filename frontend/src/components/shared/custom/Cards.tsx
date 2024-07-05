@@ -1,4 +1,4 @@
-import { useState, useTransition } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import Card from './Card';
 import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
@@ -9,7 +9,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 const Cards: React.FC = () => {
   const [offset, setOffset] = useState(0);
   const [filter, setFilter] = useState('');
-  const [appliedFilter, setAppliedFilter] = useState(''); // This will hold the filter value applied on submit
+  const [appliedFilter, setAppliedFilter] = useState('');
   const limit = 6;
 
   const {
@@ -21,19 +21,25 @@ const Cards: React.FC = () => {
   });
   const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
 
-  const [isPending, startTransition] = useTransition();
+  useEffect(() => {
+    if (transactionsData) {
+      // Check if the current offset is beyond the total number of transactions
+      const totalTransactions = transactionsData.transactions.total;
+      if (offset >= totalTransactions) {
+        setOffset(Math.max(0, totalTransactions - limit));
+      }
+    }
+  }, [transactionsData, offset, limit]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    startTransition(() => {
-      setFilter(value);
-    });
+    setFilter(e.target.value);
   };
 
   const handleFilterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAppliedFilter(filter);
-    refetch({ offset, limit, filter });
+    setOffset(0); // Reset offset when applying a new filter
+    refetch({ offset: 0, limit, filter });
   };
 
   const loadMoreTransactions = (direction: 'next' | 'prev') => {
@@ -42,6 +48,10 @@ const Cards: React.FC = () => {
     setOffset(newOffset);
     refetch({ offset: newOffset, limit, filter: appliedFilter });
   };
+
+  const filteredTransactions =
+    transactionsData?.transactions?.transactions || [];
+  const totalTransactions = transactionsData?.transactions?.total || 0;
 
   return (
     <div className='w-full px-10 min-h-[40vh]'>
@@ -61,21 +71,19 @@ const Cards: React.FC = () => {
           Search
         </button>
       </form>
-      {isPending && (
+      {transactionsLoading && (
         <p className='text-center text-gray-500'>Updating transactions...</p>
       )}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20'>
         {!transactionsLoading &&
-          transactionsData?.transactions?.transactions?.map(
-            (transaction: Transaction) => (
-              <Card
-                key={transaction.id}
-                transaction={transaction}
-                authUser={authUserData?.authUser}
-                cardType={transaction.category}
-              />
-            )
-          )}
+          filteredTransactions.map((transaction: Transaction) => (
+            <Card
+              key={transaction.id}
+              transaction={transaction}
+              authUser={authUserData?.authUser}
+              cardType={transaction.category}
+            />
+          ))}
       </div>
       <div className='flex justify-between'>
         {offset > 0 && (
@@ -85,7 +93,7 @@ const Cards: React.FC = () => {
             <MdKeyboardArrowLeft size={24} />
           </button>
         )}
-        {transactionsData?.transactions?.transactions.length === limit && (
+        {totalTransactions > offset + limit && (
           <button
             onClick={() => loadMoreTransactions('next')}
             className='mt-4 px-4 py-2 bg-white text-blue-500 rounded'>
@@ -93,12 +101,11 @@ const Cards: React.FC = () => {
           </button>
         )}
       </div>
-      {!transactionsLoading &&
-        transactionsData?.transactions?.transactions.length === 0 && (
-          <p className='text-2xl font-bold text-center w-full'>
-            No transaction history found.
-          </p>
-        )}
+      {!transactionsLoading && filteredTransactions.length === 0 && (
+        <p className='text-2xl font-bold text-center w-full'>
+          No transaction found.
+        </p>
+      )}
     </div>
   );
 };
