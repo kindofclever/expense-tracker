@@ -56,7 +56,6 @@ const Cards: React.FC = () => {
     setAppliedFilter(filter);
     setOffset(0);
     refetch({ offset: 0, limit, filter });
-    setFilter('');
   };
 
   const handleFilterReset = () => {
