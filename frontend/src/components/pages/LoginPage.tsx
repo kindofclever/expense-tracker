@@ -60,9 +60,9 @@ const LoginPage: React.FC = () => {
               <h1 className='text-3xl font-semibold mb-6 text-black text-center'>
                 Login
               </h1>
-              <h1 className='text-sm font-semibold mb-6 text-gray-500 text-center'>
+              <h2 className='text-sm font-semibold mb-6 text-gray-500 text-center'>
                 Welcome back! Log in to your account
-              </h1>
+              </h2>
               <form
                 className='space-y-4'
                 onSubmit={handleSubmit}>

@@ -19,7 +19,7 @@ const CustomHelmet: React.FC<CustomHelmetProps> = ({
   ogType = 'website',
   canonical,
 }) => {
-  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const baseUrl = 'https://sandragufler.ch';
   const canonicalUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
 
   return (
