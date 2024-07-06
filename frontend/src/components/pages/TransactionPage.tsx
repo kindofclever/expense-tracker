@@ -101,7 +101,7 @@ const TransactionPage: React.FC = () => {
         title='Update Transaction - Expense Tracker'
         description='Update your transaction details on Expense Tracker.'
         keywords='Update Transaction, Expense Tracker, Budgeting, Finance'
-        canonical={`https://www.expensetracker.com/transaction/${id}`}
+        canonical={`/transaction/${id}`}
       />
       <div className='h-screen max-w-4xl mx-auto flex flex-col items-center'>
         <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-orangeWheel via-royalBlue to-madder inline-block text-transparent bg-clip-text'>

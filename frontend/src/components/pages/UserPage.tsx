@@ -10,6 +10,7 @@ import {
 } from '../../graphql/queries/transaction.query';
 import ConfirmationDialog from '../shared/custom/ConfirmationDialog';
 import Button from '../shared/custom/Button';
+import CustomHelmet from '../shared/custom/CustomHelmet';
 
 const UserPage: React.FC = () => {
   const {
@@ -67,32 +68,40 @@ const UserPage: React.FC = () => {
   };
 
   return (
-    <div className='min-h-screen flex flex-col justify-start items-center'>
-      <div className='flex items-center gap-x-5 mb-5'>
-        <SubHeader text={`Welcome to your profile, ${authUser.username}!`} />
-        <img
-          src={authUser.profilePicture}
-          alt={`${authUser.username}'s profile`}
+    <>
+      <CustomHelmet
+        title='Profile Page - Expense Tracker'
+        description='Overwiev your account on Expense Tracker to start managing your finances efficiently.'
+        keywords='Sign Up, Expense Tracker, Budgeting, Finance'
+        canonical='/signup'
+      />
+      <div className='min-h-screen flex flex-col justify-start items-center'>
+        <div className='flex items-center gap-x-5 mb-5'>
+          <SubHeader text={`Welcome to your profile, ${authUser.username}!`} />
+          <img
+            src={authUser.profilePicture}
+            alt={`${authUser.username}'s profile`}
+          />
+        </div>
+        {transactions && transactions.length > 0 && (
+          <div className='flex justify-start items-center gap-x-5'>
+            <p>Click the button to delete all your transactions</p>
+            <Button
+              onClick={() => setDialogOpen(true)}
+              variant='danger'>
+              Delete
+            </Button>
+          </div>
+        )}
+        <ConfirmationDialog
+          isOpen={isDialogOpen}
+          onClose={handleClose}
+          onConfirm={handleDeleteAll}
+          title='Delete All Transactions'
+          message='Are you sure you want to delete all transactions? This action cannot be undone.'
         />
       </div>
-      {transactions && transactions.length > 0 && (
-        <div className='flex justify-start items-center gap-x-5'>
-          <p>Click the button to delete all your transactions</p>
-          <Button
-            onClick={() => setDialogOpen(true)}
-            variant='danger'>
-            Delete
-          </Button>
-        </div>
-      )}
-      <ConfirmationDialog
-        isOpen={isDialogOpen}
-        onClose={handleClose}
-        onConfirm={handleDeleteAll}
-        title='Delete All Transactions'
-        message='Are you sure you want to delete all transactions? This action cannot be undone.'
-      />
-    </div>
+    </>
   );
 };
 
