@@ -59,13 +59,13 @@ and various other technologies for authentication and session management.
 
 - ~~Add functionality to filter the expense/investment/savings cards~~
 - ~~Add favicon~~
-- Add user page and give the users possibilities to customize their profile
+- ~~Add user page and give the users possibilities to customize their profile~~
 - Add language support
 - Add more categories to spending
 - Imporve the pie chart to see more relevant information
-- Make it more responsive
+- ~~Make it more responsive~~
 - ~~Make sure no negative amouints of transactions can be entered~~
 - Set up CI/CD
-- Cards pagination
-- SEO
+- ~~Cards pagination~~
+- ~~SEO~~
 - ~~Style it better and use reusable colours from tailwind config~~
