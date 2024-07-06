@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -27,71 +27,6 @@ const HomePage: React.FC = () => {
 
   const [logout, { loading, client }] = useMutation(LOGOUT);
 
-  const [chartData, setChartData] = useState({
-    labels: [] as string[],
-    datasets: [
-      {
-        label: '$',
-        data: [] as number[],
-        backgroundColor: [] as string[],
-        borderColor: [] as string[],
-        borderWidth: 1,
-      },
-    ],
-  });
-
-  useEffect(() => {
-    if (transactionData?.categoryStatistics) {
-      const categories = transactionData.categoryStatistics.map(
-        (stat) => stat.category
-      );
-      const totalAmounts = transactionData.categoryStatistics.map(
-        (stat) => stat.totalAmount
-      );
-
-      const backgroundColors: string[] = [];
-      const borderColors: string[] = [];
-
-      categories.forEach((category) => {
-        if (category === 'saving') {
-          backgroundColors.push('rgba(73, 109, 219)'); // royalBlue
-          borderColors.push('rgba(73, 109, 219)'); // royalBlue
-        } else if (category === 'expense') {
-          backgroundColors.push('rgba(238, 132, 52)'); // orangeWheel
-          borderColors.push('rgba(238, 132, 52)'); // orangeWheel
-        } else if (category === 'investment') {
-          backgroundColors.push('rgba(162, 0, 33)'); // madder
-          borderColors.push('rgba(162, 0, 33)'); // madder
-        }
-      });
-
-      setChartData((prev) => ({
-        labels: categories.map(
-          (category) =>
-            category.charAt(0).toUpperCase() + category.slice(1) + 's'
-        ),
-        datasets: [
-          {
-            ...prev.datasets[0],
-            data: totalAmounts,
-            backgroundColor: backgroundColors,
-            borderColor: borderColors,
-          },
-        ],
-      }));
-    }
-  }, [transactionData]);
-
-  const options = {
-    plugins: {
-      legend: {
-        labels: {
-          color: '#EEF1EF', // tw css white
-        },
-      },
-    },
-  };
-
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -106,6 +41,59 @@ const HomePage: React.FC = () => {
       }
     }
   };
+
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          color: '#EEF1EF', // tw css white
+        },
+      },
+    },
+  };
+
+  const chartData = useMemo(() => {
+    if (!transactionData?.categoryStatistics)
+      return { labels: [], datasets: [] };
+
+    const categories = transactionData.categoryStatistics.map(
+      (stat) => stat.category
+    );
+    const totalAmounts = transactionData.categoryStatistics.map(
+      (stat) => stat.totalAmount
+    );
+
+    const backgroundColors: string[] = [];
+    const borderColors: string[] = [];
+
+    categories.forEach((category) => {
+      if (category === 'saving') {
+        backgroundColors.push('rgba(73, 109, 219)'); // royalBlue
+        borderColors.push('rgba(73, 109, 219)'); // royalBlue
+      } else if (category === 'expense') {
+        backgroundColors.push('rgba(238, 132, 52)'); // orangeWheel
+        borderColors.push('rgba(238, 132, 52)'); // orangeWheel
+      } else if (category === 'investment') {
+        backgroundColors.push('rgba(162, 0, 33)'); // madder
+        borderColors.push('rgba(162, 0, 33)'); // madder
+      }
+    });
+
+    return {
+      labels: categories.map(
+        (category) => category.charAt(0).toUpperCase() + category.slice(1) + 's'
+      ),
+      datasets: [
+        {
+          label: '',
+          data: totalAmounts,
+          backgroundColor: backgroundColors,
+          borderColor: borderColors,
+          borderWidth: 1,
+        },
+      ],
+    };
+  }, [transactionData]);
 
   return (
     <div className='flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center'>
@@ -134,7 +122,7 @@ const HomePage: React.FC = () => {
         )}
       </div>
 
-      <div className='flex flex-wrap w-full justify-center items-center gap-6'>
+      <div className='flex flex-wrap w-full justify-between items-start gap-6 min-h-[40vh]'>
         {transactionData?.categoryStatistics &&
           transactionData.categoryStatistics.length > 0 && (
             <div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]'>
@@ -144,7 +132,9 @@ const HomePage: React.FC = () => {
               />
             </div>
           )}
-        <TransactionForm />
+        <div className='w-full md:w-1/2'>
+          <TransactionForm />
+        </div>
       </div>
       <Cards />
     </div>

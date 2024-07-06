@@ -60,7 +60,7 @@ const TransactionForm: React.FC = () => {
 
   return (
     <form
-      className='w-full max-w-lg flex flex-col gap-5 px-3'
+      className='w-full flex flex-col gap-5'
       onSubmit={handleSubmit}>
       {/* TRANSACTION */}
       <div className='flex flex-wrap'>

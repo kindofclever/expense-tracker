@@ -64,7 +64,7 @@ const Cards: React.FC = () => {
   const currentPage = Math.floor(offset / limit) + 1;
 
   return (
-    <div className='w-full px-10 min-h-[40vh]'>
+    <div className='w-full  min-h-[40vh]'>
       <p className='text-5xl font-bold text-center my-10'>Transactions</p>
       <form
         onSubmit={handleFilterSubmit}
