@@ -112,6 +112,8 @@ const HomePage: React.FC = () => {
               src={authUserData.authUser.profilePicture}
               className='w-11 h-11 rounded-full border cursor-pointer'
               alt='Avatar'
+              width={120}
+              height={120}
               onClick={() => navigate(`/users/${authUserData.authUser.id}`)}
             />
           )}

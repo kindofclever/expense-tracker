@@ -81,6 +81,8 @@ const UserPage: React.FC = () => {
           <img
             src={authUser.profilePicture}
             alt={`${authUser.username}'s profile`}
+            width={120}
+            height={120}
           />
         </div>
         {transactions && transactions.length > 0 && (

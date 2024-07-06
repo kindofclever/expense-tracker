@@ -98,6 +98,8 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
             src={authUser.profilePicture}
             className='h-8 w-8 border rounded-full'
             alt='Avatar'
+            width={120}
+            height={120}
           />
         </div>
       </div>

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 interface CustomHelmetProps {
@@ -8,7 +9,11 @@ interface CustomHelmetProps {
   ogDescription?: string;
   ogType?: string;
   canonical?: string;
+  ogUrl?: string;
+  ogImage?: string;
 }
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const CustomHelmet: React.FC<CustomHelmetProps> = ({
   title = 'Expense Tracker',
@@ -18,10 +23,9 @@ const CustomHelmet: React.FC<CustomHelmetProps> = ({
   ogDescription = 'Track your expenses efficiently with our Expense Tracker. Join now to manage your finances better!',
   ogType = 'website',
   canonical,
+  ogUrl = 'https://facebook.com',
+  ogImage = 'https://unavatar.io/github/37t?fallback=https://source.boringavatars.com/marble/120/1337_user?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51',
 }) => {
-  const baseUrl = 'https://sandragufler.ch';
-  const canonicalUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
-
   return (
     <Helmet>
       <title>{title}</title>
@@ -53,9 +57,17 @@ const CustomHelmet: React.FC<CustomHelmetProps> = ({
       {canonical && (
         <link
           rel='canonical'
-          href={canonicalUrl}
+          href={`${canonical}`}
         />
       )}
+      <meta
+        property='og:url'
+        content={`${baseURL}${ogUrl}`}
+      />
+      <meta
+        property='og:image'
+        content={ogImage}
+      />
       <link
         rel='icon'
         href='./public/favicon.ico'

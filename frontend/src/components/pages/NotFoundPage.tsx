@@ -17,6 +17,8 @@ const NotFoundPage: React.FC = () => {
                 <img
                   src='/404.svg'
                   alt='404'
+                  width={800}
+                  height={200}
                 />
               </div>
               <p className='text-sm md:text-base text-[#F6009B] p-2 mb-4'>
