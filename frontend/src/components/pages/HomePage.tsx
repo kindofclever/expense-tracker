@@ -1,10 +1,11 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { MdLogout } from 'react-icons/md';
 import toast from 'react-hot-toast';
 import { useMutation, useQuery } from '@apollo/client';
+import { useTranslation } from 'react-i18next';
 
 import { LOGOUT } from '../../graphql/mutations/user.mutation';
 import { GET_TRANSACTION_STATISTICS } from '../../graphql/queries/transaction.query';
@@ -21,6 +22,7 @@ import CustomHelmet from '../shared/custom/CustomHelmet';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage: React.FC = () => {
+  const { t } = useTranslation();
   const { data: transactionData } = useQuery<TransactionStatisticsData>(
     GET_TRANSACTION_STATISTICS
   );
@@ -38,7 +40,7 @@ const HomePage: React.FC = () => {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error('An unknown error occurred');
+        toast.error(t('homePage.unknownError'));
       }
     }
   };
@@ -81,8 +83,8 @@ const HomePage: React.FC = () => {
     });
 
     return {
-      labels: categories.map(
-        (category) => category.charAt(0).toUpperCase() + category.slice(1) + 's'
+      labels: categories.map((category) =>
+        t(`homePage.categories.${category}`)
       ),
       datasets: [
         {
@@ -94,24 +96,26 @@ const HomePage: React.FC = () => {
         },
       ],
     };
-  }, [transactionData]);
+  }, [transactionData, t]);
 
   return (
     <>
       <CustomHelmet
-        title='Home Page - Expense Tracker'
-        description='This is the home page of the Expense Tracker. Manage your finances better.'
-        keywords='Home, Expense Tracker, Budgeting, Finance'
+        title={t('homePage.title')}
+        description={t('homePage.description')}
+        keywords={t('homePage.keywords')}
         canonical='/home'
       />
       <div className='flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center'>
         <div className='flex flex-col md:flex-row items-center gap-y-7 md:gap-y-0 md:gap-x-4'>
-          <SubHeader text={`Hello ${authUserData?.authUser.username}!`} />
+          <SubHeader
+            text={`${t('homePage.hello')} ${authUserData?.authUser.username}!`}
+          />
           {authUserData?.authUser?.profilePicture && (
             <img
               src={authUserData.authUser.profilePicture}
               className='w-11 h-11 rounded-full border cursor-pointer'
-              alt='Avatar'
+              alt={t('homePage.avatarAltText')}
               width={120}
               height={120}
               onClick={() => navigate(`/users/${authUserData.authUser.id}`)}
@@ -122,6 +126,7 @@ const HomePage: React.FC = () => {
               className='w-5 h-5 cursor-pointer'
               onClick={handleLogout}
               data-testid='logout-icon'
+              title={t('homePage.logout')}
             />
           )}
           {loading && (

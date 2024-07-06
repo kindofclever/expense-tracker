@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
 import InputField from '../shared/custom/InputField';
@@ -16,6 +17,7 @@ interface SignUpData {
 }
 
 const SignUpPage: React.FC = () => {
+  const { t } = useTranslation();
   const [signUpData, setSignUpData] = useState<SignUpData>({
     name: '',
     username: '',
@@ -39,7 +41,7 @@ const SignUpPage: React.FC = () => {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error('An unknown error occurred');
+        toast.error(t('signUpPage.unknownError'));
       }
     }
   };
@@ -63,9 +65,9 @@ const SignUpPage: React.FC = () => {
   return (
     <>
       <CustomHelmet
-        title='Sign Up - Expense Tracker'
-        description='Create an account on Expense Tracker to start managing your finances efficiently.'
-        keywords='Sign Up, Expense Tracker, Budgeting, Finance'
+        title={t('signUpPage.title')}
+        description={t('signUpPage.description')}
+        keywords={t('signUpPage.keywords')}
         canonical='/signup'
       />
       <div className='h-screen flex justify-center items-center'>
@@ -73,30 +75,30 @@ const SignUpPage: React.FC = () => {
           <div className='w-full bg-gray-100 min-w-80 sm:min-w-96 flex items-center justify-center'>
             <div className='max-w-md w-full p-6'>
               <h1 className='text-3xl font-semibold mb-6 text-black text-center'>
-                Sign Up
+                {t('signUpPage.header')}
               </h1>
-              <h1 className='text-sm font-semibold mb-6 text-gray-500 text-center'>
-                Join to keep track of your expenses
-              </h1>
+              <h2 className='text-sm font-semibold mb-6 text-gray-500 text-center'>
+                {t('signUpPage.subHeader')}
+              </h2>
               <form
                 className='space-y-4'
                 onSubmit={handleSubmit}>
                 <InputField
-                  label='Full Name'
+                  label={t('signUpPage.fullName')}
                   id='name'
                   name='name'
                   value={signUpData.name}
                   onChange={handleChange}
                 />
                 <InputField
-                  label='Username'
+                  label={t('signUpPage.username')}
                   id='username'
                   name='username'
                   value={signUpData.username}
                   onChange={handleChange}
                 />
                 <InputField
-                  label='Password'
+                  label={t('signUpPage.password')}
                   id='password'
                   name='password'
                   type='password'
@@ -106,21 +108,21 @@ const SignUpPage: React.FC = () => {
                 <div className='flex flex-col'>
                   <RadioButton
                     id='diverse'
-                    label='Diverse'
+                    label={t('signUpPage.gender.diverse')}
                     value='diverse'
                     onChange={handleChange}
                     checked={signUpData.gender === 'diverse'}
                   />
                   <RadioButton
                     id='female'
-                    label='Female'
+                    label={t('signUpPage.gender.female')}
                     value='female'
                     onChange={handleChange}
                     checked={signUpData.gender === 'female'}
                   />
                   <RadioButton
                     id='male'
-                    label='Male'
+                    label={t('signUpPage.gender.male')}
                     value='male'
                     onChange={handleChange}
                     checked={signUpData.gender === 'male'}
@@ -132,17 +134,19 @@ const SignUpPage: React.FC = () => {
                     variant='black'
                     className='w-full'
                     disabled={loading}>
-                    {loading ? 'Loading...' : 'Sign up'}
+                    {loading
+                      ? t('signUpPage.loading')
+                      : t('signUpPage.signUpButton')}
                   </Button>
                 </div>
               </form>
               <div className='mt-4 text-sm text-gray-600 text-center'>
                 <p>
-                  Already have an account?{' '}
+                  {t('signUpPage.loginPrompt')}{' '}
                   <Link
                     to='/login'
                     className='text-black hover:underline'>
-                    Login here
+                    {t('signUpPage.loginLink')}
                   </Link>
                 </p>
               </div>

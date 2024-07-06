@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import InputField from '../shared/custom/InputField';
 import toast from 'react-hot-toast';
 import { useMutation } from '@apollo/client';
@@ -13,6 +14,7 @@ interface LoginData {
 }
 
 const LoginPage: React.FC = () => {
+  const { t } = useTranslation();
   const [loginData, setLoginData] = useState<LoginData>({
     username: '',
     password: '',
@@ -33,14 +35,14 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!loginData.username || !loginData.password)
-      return toast.error('Please fill in all fields');
+      return toast.error(t('loginPage.fillAllFields'));
     try {
       await login({ variables: { input: loginData } });
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error('An unknown error occurred');
+        toast.error(t('loginPage.unknownError'));
       }
     }
   };
@@ -48,9 +50,9 @@ const LoginPage: React.FC = () => {
   return (
     <>
       <CustomHelmet
-        title='Login - Expense Tracker'
-        description='Login to your Expense Tracker account to manage your finances better.'
-        keywords='Login, Expense Tracker, Budgeting, Finance'
+        title={t('loginPage.title')}
+        description={t('loginPage.description')}
+        keywords={t('loginPage.keywords')}
         canonical='/login'
       />
       <div className='flex justify-center items-center h-screen'>
@@ -58,23 +60,23 @@ const LoginPage: React.FC = () => {
           <div className='w-full bg-gray-100 min-w-80 sm:min-w-96 flex items-center justify-center'>
             <div className='max-w-md w-full p-6'>
               <h1 className='text-3xl font-semibold mb-6 text-black text-center'>
-                Login
+                {t('loginPage.header')}
               </h1>
               <h2 className='text-sm font-semibold mb-6 text-gray-500 text-center'>
-                Welcome back! Log in to your account
+                {t('loginPage.subHeader')}
               </h2>
               <form
                 className='space-y-4'
                 onSubmit={handleSubmit}>
                 <InputField
-                  label='Username'
+                  label={t('loginPage.username')}
                   id='username'
                   name='username'
                   value={loginData.username}
                   onChange={handleChange}
                 />
                 <InputField
-                  label='Password'
+                  label={t('loginPage.password')}
                   id='password'
                   name='password'
                   type='password'
@@ -86,16 +88,18 @@ const LoginPage: React.FC = () => {
                   variant='black'
                   className='w-full'
                   disabled={loading}>
-                  {loading ? 'Loading...' : 'Login'}
+                  {loading
+                    ? t('loginPage.loading')
+                    : t('loginPage.loginButton')}
                 </Button>
               </form>
               <div className='mt-4 text-sm text-gray-600 text-center'>
                 <p>
-                  {"Don't"} have an account?{' '}
+                  {t('loginPage.signupPrompt')}{' '}
                   <Link
                     to='/signup'
                     className='text-black hover:underline'>
-                    Sign Up
+                    {t('loginPage.signupLink')}
                   </Link>
                 </p>
               </div>

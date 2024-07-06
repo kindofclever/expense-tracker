@@ -1,0 +1,78 @@
+{
+  "homePage": {
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten",
+    "categories": {
+      "saving": "Ersparnisse",
+      "expense": "Ausgaben",
+      "investment": "Investitionen"
+    },
+    "title": "Startseite - Ausgaben Tracker",
+    "description": "Dies ist die Startseite des Ausgaben Trackers. Verwalten Sie Ihre Finanzen besser.",
+    "keywords": "Startseite, Ausgaben Tracker, Budgetierung, Finanzen",
+    "hello": "Hallo",
+    "avatarAltText": "Avatar",
+    "logout": "Abmelden"
+  },
+  "loginPage": {
+    "title": "Anmeldung - Ausgaben Tracker",
+    "description": "Melden Sie sich bei Ihrem Ausgaben Tracker Konto an, um Ihre Finanzen besser zu verwalten.",
+    "keywords": "Anmeldung, Ausgaben Tracker, Budgetierung, Finanzen",
+    "header": "Anmeldung",
+    "subHeader": "Willkommen zurück! Melden Sie sich bei Ihrem Konto an",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "loginButton": "Anmelden",
+    "loading": "Wird geladen...",
+    "signupPrompt": "Haben Sie kein Konto?",
+    "signupLink": "Registrieren",
+    "fillAllFields": "Bitte füllen Sie alle Felder aus",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten"
+  },
+  "notFoundPage": {
+    "title": "Nicht gefunden - Ausgaben Tracker",
+    "description": "Entschuldigung, aber diese Seite existiert nicht - Nutzen Sie den Ausgaben Tracker, um Ihre Finanzen effizient zu verwalten.",
+    "keywords": "Nicht gefunden, Ausgaben Tracker, Budgetierung, Finanzen",
+    "message": "Das, wonach Sie gesucht haben, existiert nicht",
+    "homeButton": "Bring mich nach Hause"
+  },
+  "signUpPage": {
+    "title": "Registrieren - Ausgaben Tracker",
+    "description": "Erstellen Sie ein Konto auf Ausgaben Tracker, um Ihre Finanzen effizient zu verwalten.",
+    "keywords": "Registrieren, Ausgaben Tracker, Budgetierung, Finanzen",
+    "header": "Registrieren",
+    "subHeader": "Treten Sie bei, um Ihre Ausgaben im Auge zu behalten",
+    "fullName": "Vollständiger Name",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "gender": {
+      "diverse": "Divers",
+      "female": "Weiblich",
+      "male": "Männlich"
+    },
+    "loading": "Wird geladen...",
+    "signUpButton": "Registrieren",
+    "loginPrompt": "Haben Sie schon ein Konto?",
+    "loginLink": "Hier anmelden",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten"
+  },
+  "transactionPage": {
+    "title": "Transaktion aktualisieren - Ausgaben Tracker",
+    "description": "Aktualisieren Sie Ihre Transaktionsdetails auf dem Ausgaben Tracker.",
+    "keywords": "Transaktion aktualisieren, Ausgaben Tracker, Budgetierung, Finanzen",
+    "header": "Diese Transaktion aktualisieren",
+    "transactionLabel": "Transaktion",
+    "paymentTypeLabel": "Zahlungsart",
+    "categoryLabel": "Kategorie",
+    "amountLabel": "Betrag",
+    "locationLabel": "Standort",
+    "dateLabel": "Datum",
+    "amountPlaceholder": "150",
+    "transactionPlaceholder": "Miete, Lebensmittel, Gehalt, etc.",
+    "locationPlaceholder": "St. Gallen",
+    "updateButton": "Transaktion aktualisieren",
+    "loadingUpdate": "Wird aktualisiert...",
+    "negativeAmountError": "Der Betrag darf nicht negativ sein",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten",
+    "successMessage": "Transaktion erfolgreich aktualisiert"
+  }
+}

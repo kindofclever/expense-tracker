@@ -1,0 +1,78 @@
+{
+  "homePage": {
+    "unknownError": "An unknown error occurred",
+    "categories": {
+      "saving": "Savings",
+      "expense": "Expenses",
+      "investment": "Investments"
+    },
+    "title": "Home Page - Expense Tracker",
+    "description": "This is the home page of the Expense Tracker. Manage your finances better.",
+    "keywords": "Home, Expense Tracker, Budgeting, Finance",
+    "hello": "Hello",
+    "avatarAltText": "Avatar",
+    "logout": "Logout"
+  },
+  "loginPage": {
+    "title": "Login - Expense Tracker",
+    "description": "Login to your Expense Tracker account to manage your finances better.",
+    "keywords": "Login, Expense Tracker, Budgeting, Finance",
+    "header": "Login",
+    "subHeader": "Welcome back! Log in to your account",
+    "username": "Username",
+    "password": "Password",
+    "loginButton": "Login",
+    "loading": "Loading...",
+    "signupPrompt": "Don't have an account?",
+    "signupLink": "Sign Up",
+    "fillAllFields": "Please fill in all fields",
+    "unknownError": "An unknown error occurred"
+  },
+  "notFoundPage": {
+    "title": "Not Found - Expense Tracker",
+    "description": "Sorry but this page does not exist - Use Expense Tracker to start managing your finances efficiently.",
+    "keywords": "Not found, Expense Tracker, Budgeting, Finance",
+    "message": "The stuff you were looking for doesn't exist",
+    "homeButton": "Take me home"
+  },
+  "signUpPage": {
+    "title": "Sign Up - Expense Tracker",
+    "description": "Create an account on Expense Tracker to start managing your finances efficiently.",
+    "keywords": "Sign Up, Expense Tracker, Budgeting, Finance",
+    "header": "Sign Up",
+    "subHeader": "Join to keep track of your expenses",
+    "fullName": "Full Name",
+    "username": "Username",
+    "password": "Password",
+    "gender": {
+      "diverse": "Diverse",
+      "female": "Female",
+      "male": "Male"
+    },
+    "loading": "Loading...",
+    "signUpButton": "Sign Up",
+    "loginPrompt": "Already have an account?",
+    "loginLink": "Login here",
+    "unknownError": "An unknown error occurred"
+  },
+  "transactionPage": {
+    "title": "Update Transaction - Expense Tracker",
+    "description": "Update your transaction details on Expense Tracker.",
+    "keywords": "Update Transaction, Expense Tracker, Budgeting, Finance",
+    "header": "Update this transaction",
+    "transactionLabel": "Transaction",
+    "paymentTypeLabel": "Payment Type",
+    "categoryLabel": "Category",
+    "amountLabel": "Amount",
+    "locationLabel": "Location",
+    "dateLabel": "Date",
+    "amountPlaceholder": "150",
+    "transactionPlaceholder": "Rent, Groceries, Salary, etc.",
+    "locationPlaceholder": "St. Gallen",
+    "updateButton": "Update Transaction",
+    "loadingUpdate": "Updating...",
+    "negativeAmountError": "Amount cannot be negative",
+    "unknownError": "An unknown error occurred",
+    "successMessage": "Transaction updated successfully"
+  }
+}

@@ -1,13 +1,17 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import CustomHelmet from '../shared/custom/CustomHelmet';
 
 const NotFoundPage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <CustomHelmet
-        title='Not Found - Expense Tracker'
-        description='Sorry but this page does not exist - Use Expense Tracker to start managing your finances efficiently.'
-        keywords='Not found, Expense Tracker, Budgeting, Finance'
-        canonical='/signup'
+        title={t('notFoundPage.title')}
+        description={t('notFoundPage.description')}
+        keywords={t('notFoundPage.keywords')}
+        canonical='/not-found'
       />
       <section>
         <div className=''>
@@ -21,13 +25,13 @@ const NotFoundPage: React.FC = () => {
                   height={200}
                 />
               </div>
-              <p className='text-sm md:text-base text-[#F6009B] p-2 mb-4'>
-                The stuff you were looking for doesn't exist
+              <p className='text-sm md:text-base text-madder p-2 mb-4'>
+                {t('notFoundPage.message')}
               </p>
               <a
                 href='/'
-                className='bg-transparent hover:bg-[#F6009B] text-[#F6009B] hover: rounded shadow hover:shadow-lg py-2 px-4 border border-[#F6009B] hover:border-transparent'>
-                Take me home
+                className='bg-transparent hover:bg-orangeWheel text-madder hover: rounded shadow hover:shadow-lg py-2 px-4 border border-madder hover:border-transparent'>
+                {t('notFoundPage.homeButton')}
               </a>
             </div>
           </div>
