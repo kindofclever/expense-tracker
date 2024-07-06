@@ -11,12 +11,14 @@ import UserPage from './components/pages/UserPage';
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user.query';
 import CustomToaster from './components/shared/custom/CustomToaster';
 import Layout from './components/layout/Layout';
+import CustomHelmet from './components/shared/custom/CustomHelmet';
 
 const App: React.FC = () => {
   const { data } = useQuery(GET_AUTHENTICATED_USER);
 
   return (
     <>
+      <CustomHelmet canonical='/' />
       <Routes>
         <Route element={<Layout />}>
           <Route

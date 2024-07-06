@@ -6,6 +6,7 @@ import InputField from '../shared/custom/InputField';
 import RadioButton from '../shared/custom/RadioButton';
 import { SIGN_UP } from '../../graphql/mutations/user.mutation';
 import Button from '../shared/custom/Button';
+import CustomHelmet from '../shared/custom/CustomHelmet';
 
 interface SignUpData {
   name: string;
@@ -60,88 +61,96 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div className='h-screen flex justify-center items-center'>
-      <div className='flex rounded-lg overflow-hidden z-50 bg-gray-300'>
-        <div className='w-full bg-gray-100 min-w-80 sm:min-w-96 flex items-center justify-center'>
-          <div className='max-w-md w-full p-6'>
-            <h1 className='text-3xl font-semibold mb-6 text-black text-center'>
-              Sign Up
-            </h1>
-            <h1 className='text-sm font-semibold mb-6 text-gray-500 text-center'>
-              Join to keep track of your expenses
-            </h1>
-            <form
-              className='space-y-4'
-              onSubmit={handleSubmit}>
-              <InputField
-                label='Full Name'
-                id='name'
-                name='name'
-                value={signUpData.name}
-                onChange={handleChange}
-              />
-              <InputField
-                label='Username'
-                id='username'
-                name='username'
-                value={signUpData.username}
-                onChange={handleChange}
-              />
-              <InputField
-                label='Password'
-                id='password'
-                name='password'
-                type='password'
-                value={signUpData.password}
-                onChange={handleChange}
-              />
-              <div className='flex flex-col'>
-                <RadioButton
-                  id='diverse'
-                  label='Diverse'
-                  value='diverse'
+    <>
+      <CustomHelmet
+        title='Sign Up - Expense Tracker'
+        description='Create an account on Expense Tracker to start managing your finances efficiently.'
+        keywords='Sign Up, Expense Tracker, Budgeting, Finance'
+        canonical='/signup'
+      />
+      <div className='h-screen flex justify-center items-center'>
+        <div className='flex rounded-lg overflow-hidden z-50 bg-gray-300'>
+          <div className='w-full bg-gray-100 min-w-80 sm:min-w-96 flex items-center justify-center'>
+            <div className='max-w-md w-full p-6'>
+              <h1 className='text-3xl font-semibold mb-6 text-black text-center'>
+                Sign Up
+              </h1>
+              <h1 className='text-sm font-semibold mb-6 text-gray-500 text-center'>
+                Join to keep track of your expenses
+              </h1>
+              <form
+                className='space-y-4'
+                onSubmit={handleSubmit}>
+                <InputField
+                  label='Full Name'
+                  id='name'
+                  name='name'
+                  value={signUpData.name}
                   onChange={handleChange}
-                  checked={signUpData.gender === 'diverse'}
                 />
-                <RadioButton
-                  id='female'
-                  label='Female'
-                  value='female'
+                <InputField
+                  label='Username'
+                  id='username'
+                  name='username'
+                  value={signUpData.username}
                   onChange={handleChange}
-                  checked={signUpData.gender === 'female'}
                 />
-                <RadioButton
-                  id='male'
-                  label='Male'
-                  value='male'
+                <InputField
+                  label='Password'
+                  id='password'
+                  name='password'
+                  type='password'
+                  value={signUpData.password}
                   onChange={handleChange}
-                  checked={signUpData.gender === 'male'}
                 />
+                <div className='flex flex-col'>
+                  <RadioButton
+                    id='diverse'
+                    label='Diverse'
+                    value='diverse'
+                    onChange={handleChange}
+                    checked={signUpData.gender === 'diverse'}
+                  />
+                  <RadioButton
+                    id='female'
+                    label='Female'
+                    value='female'
+                    onChange={handleChange}
+                    checked={signUpData.gender === 'female'}
+                  />
+                  <RadioButton
+                    id='male'
+                    label='Male'
+                    value='male'
+                    onChange={handleChange}
+                    checked={signUpData.gender === 'male'}
+                  />
+                </div>
+                <div>
+                  <Button
+                    type='submit'
+                    variant='black'
+                    className='w-full'
+                    disabled={loading}>
+                    {loading ? 'Loading...' : 'Sign up'}
+                  </Button>
+                </div>
+              </form>
+              <div className='mt-4 text-sm text-gray-600 text-center'>
+                <p>
+                  Already have an account?{' '}
+                  <Link
+                    to='/login'
+                    className='text-black hover:underline'>
+                    Login here
+                  </Link>
+                </p>
               </div>
-              <div>
-                <Button
-                  type='submit'
-                  variant='black'
-                  className='w-full'
-                  disabled={loading}>
-                  {loading ? 'Loading...' : 'Sign up'}
-                </Button>
-              </div>
-            </form>
-            <div className='mt-4 text-sm text-gray-600 text-center'>
-              <p>
-                Already have an account?{' '}
-                <Link
-                  to='/login'
-                  className='text-black hover:underline'>
-                  Login here
-                </Link>
-              </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

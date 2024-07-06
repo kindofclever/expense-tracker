@@ -16,6 +16,7 @@ import {
   AuthUserData,
 } from '../../interfaces/interfaces';
 import SubHeader from '../shared/custom/SubHeader';
+import CustomHelmet from '../shared/custom/CustomHelmet';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -85,7 +86,7 @@ const HomePage: React.FC = () => {
       ),
       datasets: [
         {
-          label: '',
+          label: 'CHF',
           data: totalAmounts,
           backgroundColor: backgroundColors,
           borderColor: borderColors,
@@ -96,48 +97,53 @@ const HomePage: React.FC = () => {
   }, [transactionData]);
 
   return (
-    <div className='flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center'>
-      <div className='flex flex-col md:flex-row items-center gap-y-7 md:gap-y-0 md:gap-x-4'>
-        <div className='flex flex-col items-start'>
-          <SubHeader text={`Hello ${authUserData?.authUser.username},`} />
-          <SubHeader text='nice to have you here' />
-        </div>
-        {authUserData?.authUser?.profilePicture && (
-          <img
-            src={authUserData.authUser.profilePicture}
-            className='w-11 h-11 rounded-full border cursor-pointer'
-            alt='Avatar'
-            onClick={() => navigate(`/users/${authUserData.authUser.id}`)}
-          />
-        )}
-        {!loading && (
-          <MdLogout
-            className='w-5 h-5 cursor-pointer'
-            onClick={handleLogout}
-            data-testid='logout-icon'
-          />
-        )}
-        {loading && (
-          <div className='w-6 h-6 border-t-2 border-b-2 rounded-full animate-spin'></div>
-        )}
-      </div>
-
-      <div className='flex flex-wrap w-full justify-between items-start gap-6 min-h-[40vh]'>
-        {transactionData?.categoryStatistics &&
-          transactionData.categoryStatistics.length > 0 && (
-            <div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]'>
-              <Pie
-                data={chartData}
-                options={options}
-              />
-            </div>
+    <>
+      <CustomHelmet
+        title='Home Page - Expense Tracker'
+        description='This is the home page of the Expense Tracker. Manage your finances better.'
+        keywords='Home, Expense Tracker, Budgeting, Finance'
+        canonical='/home'
+      />
+      <div className='flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center'>
+        <div className='flex flex-col md:flex-row items-center gap-y-7 md:gap-y-0 md:gap-x-4'>
+          <SubHeader text={`Hello ${authUserData?.authUser.username}!`} />
+          {authUserData?.authUser?.profilePicture && (
+            <img
+              src={authUserData.authUser.profilePicture}
+              className='w-11 h-11 rounded-full border cursor-pointer'
+              alt='Avatar'
+              onClick={() => navigate(`/users/${authUserData.authUser.id}`)}
+            />
           )}
-        <div className='w-full md:w-1/2'>
-          <TransactionForm />
+          {!loading && (
+            <MdLogout
+              className='w-5 h-5 cursor-pointer'
+              onClick={handleLogout}
+              data-testid='logout-icon'
+            />
+          )}
+          {loading && (
+            <div className='w-6 h-6 border-t-2 border-b-2 rounded-full animate-spin'></div>
+          )}
         </div>
+
+        <div className='flex flex-wrap w-full justify-between items-start gap-6 min-h-[40vh]'>
+          {transactionData?.categoryStatistics &&
+            transactionData.categoryStatistics.length > 0 && (
+              <div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]'>
+                <Pie
+                  data={chartData}
+                  options={options}
+                />
+              </div>
+            )}
+          <div className='w-full md:w-1/2'>
+            <TransactionForm />
+          </div>
+        </div>
+        <Cards />
       </div>
-      <Cards />
-    </div>
+    </>
   );
 };
 
