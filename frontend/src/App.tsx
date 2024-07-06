@@ -7,7 +7,6 @@ import NotFoundPage from './components/pages/NotFoundPage';
 import SignUpPage from './components/pages/SignUpPage';
 import TransactionPage from './components/pages/TransactionPage';
 import UserPage from './components/pages/UserPage';
-import Header from './components/shared/custom/Header';
 
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user.query';
 import CustomToaster from './components/shared/custom/CustomToaster';
@@ -18,7 +17,6 @@ const App: React.FC = () => {
 
   return (
     <>
-      {data?.authUser && <Header />}
       <Routes>
         <Route element={<Layout />}>
           <Route

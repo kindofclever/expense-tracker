@@ -1,48 +1,97 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import {
-  GET_AUTHENTICATED_USER,
-  GET_USER_AND_TRANSACTIONS,
-} from '../../graphql/queries/user.query';
+import React, { useState } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { toast } from 'react-hot-toast';
 import SubHeader from '../shared/custom/SubHeader';
+import { GET_AUTHENTICATED_USER } from '../../graphql/queries/user.query';
+import {
+  DELETE_ALL_TRANSACTIONS,
+  GET_TRANSACTION_STATISTICS,
+  GET_TRANSACTIONS,
+} from '../../graphql/queries/transaction.query';
+import ConfirmationDialog from '../shared/custom/ConfirmationDialog';
+import Button from '../shared/custom/Button';
 
 const UserPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-
   const {
     loading: authLoading,
     data: authData,
     error: authError,
   } = useQuery(GET_AUTHENTICATED_USER);
   const {
-    loading: userLoading,
-    data: userData,
-    error: userError,
-  } = useQuery(GET_USER_AND_TRANSACTIONS, {
-    variables: { userId: id },
+    loading: transactionsLoading,
+    data: transactionsData,
+    error: transactionsError,
+  } = useQuery(GET_TRANSACTIONS, {
+    variables: { offset: 0, limit: 1, filter: '' }, // Fetch only 1 transaction to check if there are any
+  });
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const [deleteAllTransactions] = useMutation(DELETE_ALL_TRANSACTIONS, {
+    onCompleted: (data) => {
+      if (data.deleteAllTransactions.success) {
+        toast.success('All transactions deleted successfully!');
+        handleClose();
+      } else {
+        toast.error(
+          data.deleteAllTransactions.message || 'Failed to delete transactions.'
+        );
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message || 'An error occurred.');
+    },
+    refetchQueries: [
+      { query: GET_TRANSACTION_STATISTICS },
+      {
+        query: GET_TRANSACTIONS,
+        variables: { offset: 0, limit: 6, filter: '' },
+      },
+    ],
   });
 
-  if (authLoading || userLoading) return <p>...Loading</p>;
-  if (authError || userError)
-    return <p>Error: {authError?.message || userError?.message}</p>;
+  if (authLoading || transactionsLoading) return <p>...Loading</p>;
+  if (authError || transactionsError)
+    return <p>Error: {authError?.message || transactionsError?.message}</p>;
 
   const authUser = authData?.authUser;
-  const user = userData?.user;
+  const transactions = transactionsData?.transactions?.transactions;
 
   if (!authUser) return <p>You must be logged in to view this page.</p>;
 
+  const handleDeleteAll = () => {
+    deleteAllTransactions({ variables: { userId: authUser.id } });
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
   return (
-    <div className='min-h-screen flex justify-center items-start'>
-      <div className='flex items-center gap-x-5'>
-        <SubHeader
-          text={`Welcome to you profile, ${authData?.authUser.username}!`}
-        />
+    <div className='min-h-screen flex flex-col justify-start items-center'>
+      <div className='flex items-center gap-x-5 mb-5'>
+        <SubHeader text={`Welcome to your profile, ${authUser.username}!`} />
         <img
-          src={user.profilePicture}
-          alt={`${user.name}'s profile`}
+          src={authUser.profilePicture}
+          alt={`${authUser.username}'s profile`}
         />
       </div>
+      {transactions && transactions.length > 0 && (
+        <div className='flex justify-start items-center gap-x-5'>
+          <p>Click the button to delete all your transactions</p>
+          <Button
+            onClick={() => setDialogOpen(true)}
+            variant='danger'>
+            Delete
+          </Button>
+        </div>
+      )}
+      <ConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={handleClose}
+        onConfirm={handleDeleteAll}
+        title='Delete All Transactions'
+        message='Are you sure you want to delete all transactions? This action cannot be undone.'
+      />
     </div>
   );
 };

@@ -44,3 +44,12 @@ export const GET_TRANSACTION_STATISTICS = gql`
     }
   }
 `;
+
+export const DELETE_ALL_TRANSACTIONS = gql`
+  mutation DeleteAllTransactions($userId: ID!) {
+    deleteAllTransactions(userId: $userId) {
+      success
+      message
+    }
+  }
+`;

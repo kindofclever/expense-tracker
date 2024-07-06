@@ -201,7 +201,23 @@ const transactionResolver: IResolvers = {
         throw new Error("Error deleting transaction");
       }
     },
+    deleteAllTransactions: async (_, { userId }: { userId: string }, context: any): Promise<{ success: boolean; message: string }> => {
+      try {
+        const user = await context.getUser();
+        if (!user || user.id !== parseInt(userId)) throw new Error("Unauthorized");
+
+        await prisma.transaction.deleteMany({
+          where: { userId: parseInt(userId) },
+        });
+
+        return { success: true, message: "All transactions have been successfully deleted." };
+      } catch (err: unknown) {
+        console.error("Error deleting all transactions:", err);
+        return { success: false, message: "Error deleting all transactions." };
+      }
+    },
   },
+
   Transaction: {
     user: async (parent): Promise<User | null> => {
       try {

@@ -39,11 +39,17 @@ type Mutation {
   createTransaction(input: CreateTransactionInput!): Transaction!
   updateTransaction(input: UpdateTransactionInput!): Transaction!
   deleteTransaction(transactionId: ID!): Transaction!
+  deleteAllTransactions(userId: ID!): DeleteAllTransactionsResponse!
 }
 
 type CategoryStatistics {
   category: String!
   totalAmount: Float!
+}
+
+type DeleteAllTransactionsResponse {
+  success: Boolean!
+  message: String!
 }
 
 input CreateTransactionInput {

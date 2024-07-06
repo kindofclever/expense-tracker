@@ -7,12 +7,12 @@ const CustomToaster = () => {
       toastOptions={{
         success: {
           style: {
-            background: '#97F9F9', // royalBlue
+            background: '#496DDB', // royalBlue
             color: '#EEF1EF', // white
           },
           iconTheme: {
             primary: '#EEF1EF', // white
-            secondary: '#97F9F9', // royalBlue
+            secondary: '#496DDB', // royalBlue
           },
         },
         error: {

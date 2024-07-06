@@ -5,7 +5,7 @@ import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
 import { GET_AUTHENTICATED_USER } from '../../../graphql/queries/user.query';
 import { Transaction } from '../../../interfaces/interfaces';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
-import { RxReset } from 'react-icons/rx'; // Import the reset icon
+import { RxReset } from 'react-icons/rx';
 import Button from './Button';
 
 const Cards: React.FC = () => {
@@ -65,7 +65,7 @@ const Cards: React.FC = () => {
 
   return (
     <div className='w-full px-10 min-h-[40vh]'>
-      <p className='text-5xl font-bold text-center my-10'>History</p>
+      <p className='text-5xl font-bold text-center my-10'>Transactions</p>
       <form
         onSubmit={handleFilterSubmit}
         className='flex items-center justify-center w-full mb-5'>
