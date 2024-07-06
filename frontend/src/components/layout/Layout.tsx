@@ -11,7 +11,7 @@ const Layout: React.FC = () => {
         <Outlet />
       </main>
       <footer className='text-center p-4'>
-        © 2023 Expense Tracker. All rights reserved.
+        © 2024 Expense Tracker. All rights reserved.
       </footer>
     </div>
   );

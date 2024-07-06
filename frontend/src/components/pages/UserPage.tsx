@@ -71,9 +71,9 @@ const UserPage: React.FC = () => {
     <>
       <CustomHelmet
         title='Profile Page - Expense Tracker'
-        description='Overwiev your account on Expense Tracker to start managing your finances efficiently.'
-        keywords='Sign Up, Expense Tracker, Budgeting, Finance'
-        canonical='/signup'
+        description='Overview your account on Expense Tracker to start managing your finances efficiently.'
+        keywords='Profile, Expense Tracker, Budgeting, Finance'
+        canonical={`/users/${authUser.id}`}
       />
       <div className='min-h-screen flex flex-col justify-start items-center'>
         <div className='flex items-center gap-x-5 mb-5'>

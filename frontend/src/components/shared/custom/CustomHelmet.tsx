@@ -1,4 +1,3 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 interface CustomHelmetProps {
@@ -20,6 +19,9 @@ const CustomHelmet: React.FC<CustomHelmetProps> = ({
   ogType = 'website',
   canonical,
 }) => {
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const canonicalUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
+
   return (
     <Helmet>
       <title>{title}</title>
@@ -51,7 +53,7 @@ const CustomHelmet: React.FC<CustomHelmetProps> = ({
       {canonical && (
         <link
           rel='canonical'
-          href={canonical}
+          href={canonicalUrl}
         />
       )}
       <link

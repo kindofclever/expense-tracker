@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
 import { Category, Transaction, User } from '../../../interfaces/interfaces';
 import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
-import { DELETE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
 import dayjs from 'dayjs';
+
+import { DELETE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
 import ConfirmationDialog from './ConfirmationDialog';
 
 interface CardProps {

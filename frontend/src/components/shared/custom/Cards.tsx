@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/client';
 import Card from './Card';
 import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
@@ -21,16 +21,8 @@ const Cards: React.FC = () => {
   } = useQuery(GET_TRANSACTIONS, {
     variables: { offset, limit, filter: appliedFilter },
   });
-  const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
 
-  useEffect(() => {
-    if (transactionsData) {
-      const totalTransactions = transactionsData.transactions.total;
-      if (offset >= totalTransactions) {
-        setOffset(Math.max(0, totalTransactions - limit));
-      }
-    }
-  }, [transactionsData, offset, limit]);
+  const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);
@@ -50,21 +42,33 @@ const Cards: React.FC = () => {
     refetch({ offset: 0, limit, filter: '' });
   };
 
-  const loadMoreTransactions = (direction: 'next' | 'prev') => {
-    const newOffset =
-      direction === 'next' ? offset + limit : Math.max(0, offset - limit);
-    setOffset(newOffset);
-    refetch({ offset: newOffset, limit, filter: appliedFilter });
-  };
+  const loadMoreTransactions = useCallback(
+    (direction: 'next' | 'prev') => {
+      const newOffset =
+        direction === 'next' ? offset + limit : Math.max(0, offset - limit);
+      setOffset(newOffset);
+      refetch({ offset: newOffset, limit, filter: appliedFilter });
+    },
+    [offset, limit, appliedFilter, refetch]
+  );
 
-  const filteredTransactions =
-    transactionsData?.transactions?.transactions || [];
-  const totalTransactions = transactionsData?.transactions?.total || 0;
-  const totalPages = Math.ceil(totalTransactions / limit);
-  const currentPage = Math.floor(offset / limit) + 1;
+  const memoizedValues = useMemo(() => {
+    const filteredTransactions =
+      transactionsData?.transactions?.transactions || [];
+    const totalTransactions = transactionsData?.transactions?.total || 0;
+    if (offset >= totalTransactions) {
+      setOffset(Math.max(0, totalTransactions - limit));
+    }
+    const totalPages = Math.ceil(totalTransactions / limit);
+    const currentPage = Math.floor(offset / limit) + 1;
+    return { filteredTransactions, totalTransactions, totalPages, currentPage };
+  }, [transactionsData, offset, limit]);
+
+  const { filteredTransactions, totalTransactions, totalPages, currentPage } =
+    memoizedValues;
 
   return (
-    <div className='w-full  min-h-[40vh]'>
+    <div className='w-full min-h-[40vh]'>
       <p className='text-5xl font-bold text-center my-10'>Transactions</p>
       <form
         onSubmit={handleFilterSubmit}
@@ -141,4 +145,5 @@ const Cards: React.FC = () => {
   );
 };
 
-export default Cards;
+const MemoizedCards = React.memo(Cards);
+export default MemoizedCards;
