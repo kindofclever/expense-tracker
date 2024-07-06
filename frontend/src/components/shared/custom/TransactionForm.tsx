@@ -68,7 +68,7 @@ const TransactionForm: React.FC = () => {
           <label
             className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='description'>
-            Transaction
+            Describe your transaction
           </label>
           <input
             className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
