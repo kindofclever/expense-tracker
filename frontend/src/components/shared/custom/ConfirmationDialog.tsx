@@ -1,3 +1,5 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from './Button';
 
 interface ConfirmationDialogProps {
@@ -15,6 +17,8 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   title,
   message,
 }) => {
+  const { t } = useTranslation();
+
   if (!isOpen) return null;
 
   return (
@@ -26,7 +30,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
           <Button
             variant='form'
             onClick={onClose}>
-            Cancel
+            {t('confirmationDialog.cancel')}
           </Button>
           <Button
             variant='danger'
@@ -34,7 +38,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
               onConfirm();
               onClose();
             }}>
-            Delete
+            {t('confirmationDialog.delete')}
           </Button>
         </div>
       </div>

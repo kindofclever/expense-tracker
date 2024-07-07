@@ -74,5 +74,77 @@
     "negativeAmountError": "Amount cannot be negative",
     "unknownError": "An unknown error occurred",
     "successMessage": "Transaction updated successfully"
+  },
+  "userPage": {
+    "loading": "...Loading",
+    "error": "Error: {{message}}",
+    "notLoggedIn": "You must be logged in to view this page.",
+    "welcome": "Welcome to your profile, {{username}}!",
+    "deleteButton": "Delete",
+    "deleteMessage": "Click the button to delete all your transactions",
+    "dialogTitle": "Delete All Transactions",
+    "dialogMessage": "Are you sure you want to delete all transactions? This action cannot be undone.",
+    "deleteSuccess": "All transactions deleted successfully!",
+    "deleteFailed": "Failed to delete transactions.",
+    "profilePageTitle": "Profile Page - Expense Tracker",
+    "profilePageDescription": "Overview your account on Expense Tracker to start managing your finances efficiently.",
+    "profilePageKeywords": "Profile, Expense Tracker, Budgeting, Finance",
+    "switchLanguage": "Change language",
+    "english": "English",
+    "german": "German"
+  },
+  "card": {
+    "loading": "Loading...",
+    "deleteSuccess": "Transaction deleted successfully",
+    "unknownError": "An unknown error occurred",
+    "confirmDeletion": "Confirm Deletion",
+    "confirmMessage": "Are you sure you want to delete this transaction?",
+    "description": "Description",
+    "paymentType": "Payment Type",
+    "amount": "Amount",
+    "location": "Location"
+  },
+  "cards": {
+    "title": "Transactions",
+    "searchPlaceholder": "Search for transactions",
+    "searchButton": "Search",
+    "resetButton": "Reset",
+    "loading": "Updating transactions...",
+    "noTransactions": "No transactions found.",
+    "pageInfo": "Page {{currentPage}} of {{totalPages}}"
+  },
+  "confirmationDialog": {
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "header": {
+    "welcome": "Welcome to the Expense Tracker"
+  },
+  "transactionForm": {
+    "transactionDescriptionLabel": "Describe your transaction",
+    "transactionDescriptionPlaceholder": "Rent, Groceries, Salary, etc.",
+    "paymentTypeLabel": "Payment Type",
+    "categoryLabel": "Category",
+    "amountLabel": "Amount",
+    "locationLabel": "Location",
+    "locationPlaceholder": "St. Gallen",
+    "dateLabel": "Date",
+    "selectDate": "Select date",
+    "transactionSuccess": "Transaction created successfully",
+    "unknownError": "An unknown error occurred",
+    "negativeAmountError": "Amount cannot be negative",
+    "loading": "Loading...",
+    "addTransaction": "Add Transaction",
+    "paymentType": {
+      "cash": "Cash",
+      "debit": "Debit",
+      "credit": "Credit",
+      "twint": "Twint"
+    },
+    "category": {
+      "investment": "Investment",
+      "saving": "Saving",
+      "expense": "Expense"
+    }
   }
 }

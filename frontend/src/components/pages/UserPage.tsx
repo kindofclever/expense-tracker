@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import SubHeader from '../shared/custom/SubHeader';
 import { GET_AUTHENTICATED_USER } from '../../graphql/queries/user.query';
 import {
@@ -11,8 +12,10 @@ import {
 import ConfirmationDialog from '../shared/custom/ConfirmationDialog';
 import Button from '../shared/custom/Button';
 import CustomHelmet from '../shared/custom/CustomHelmet';
+import i18next from 'i18next';
 
 const UserPage: React.FC = () => {
+  const { t } = useTranslation();
   const {
     loading: authLoading,
     data: authData,
@@ -23,23 +26,23 @@ const UserPage: React.FC = () => {
     data: transactionsData,
     error: transactionsError,
   } = useQuery(GET_TRANSACTIONS, {
-    variables: { offset: 0, limit: 1, filter: '' }, // Fetch only 1 transaction to check if there are any
+    variables: { offset: 0, limit: 1, filter: '' },
   });
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const [deleteAllTransactions] = useMutation(DELETE_ALL_TRANSACTIONS, {
     onCompleted: (data) => {
       if (data.deleteAllTransactions.success) {
-        toast.success('All transactions deleted successfully!');
+        toast.success(t('userPage.deleteSuccess'));
         handleClose();
       } else {
         toast.error(
-          data.deleteAllTransactions.message || 'Failed to delete transactions.'
+          data.deleteAllTransactions.message || t('userPage.deleteFailed')
         );
       }
     },
     onError: (error) => {
-      toast.error(error.message || 'An error occurred.');
+      toast.error(error.message || t('userPage.deleteFailed'));
     },
     refetchQueries: [
       { query: GET_TRANSACTION_STATISTICS },
@@ -50,14 +53,20 @@ const UserPage: React.FC = () => {
     ],
   });
 
-  if (authLoading || transactionsLoading) return <p>...Loading</p>;
+  if (authLoading || transactionsLoading) return <p>{t('userPage.loading')}</p>;
   if (authError || transactionsError)
-    return <p>Error: {authError?.message || transactionsError?.message}</p>;
+    return (
+      <p>
+        {t('userPage.error', {
+          message: authError?.message || transactionsError?.message,
+        })}
+      </p>
+    );
 
   const authUser = authData?.authUser;
   const transactions = transactionsData?.transactions?.transactions;
 
-  if (!authUser) return <p>You must be logged in to view this page.</p>;
+  if (!authUser) return <p>{t('userPage.notLoggedIn')}</p>;
 
   const handleDeleteAll = () => {
     deleteAllTransactions({ variables: { userId: authUser.id } });
@@ -67,17 +76,24 @@ const UserPage: React.FC = () => {
     setDialogOpen(false);
   };
 
+  const changeLanguage = (language: string) => {
+    console.log('change lang clicked');
+    i18next.changeLanguage(language);
+  };
+
   return (
     <>
       <CustomHelmet
-        title='Profile Page - Expense Tracker'
-        description='Overview your account on Expense Tracker to start managing your finances efficiently.'
-        keywords='Profile, Expense Tracker, Budgeting, Finance'
+        title={t('userPage.profilePageTitle')}
+        description={t('userPage.profilePageDescription')}
+        keywords={t('userPage.profilePageKeywords')}
         canonical={`/users/${authUser.id}`}
       />
       <div className='min-h-screen flex flex-col justify-start items-center'>
         <div className='flex items-center gap-x-5 mb-5'>
-          <SubHeader text={`Welcome to your profile, ${authUser.username}!`} />
+          <SubHeader
+            text={t('userPage.welcome', { username: authUser.username })}
+          />
           <img
             src={authUser.profilePicture}
             alt={`${authUser.username}'s profile`}
@@ -85,13 +101,26 @@ const UserPage: React.FC = () => {
             height={120}
           />
         </div>
+        <div className='flex items-center gap-x-5 mb-5'>
+          <p>{t('userPage.switchLanguage')}</p>
+          <Button
+            onClick={() => changeLanguage('en')}
+            variant='primary'>
+            {t('userPage.english')}
+          </Button>
+          <Button
+            onClick={() => changeLanguage('de')}
+            variant='primary'>
+            {t('userPage.german')}
+          </Button>
+        </div>
         {transactions && transactions.length > 0 && (
           <div className='flex justify-start items-center gap-x-5'>
-            <p>Click the button to delete all your transactions</p>
+            <p>{t('userPage.deleteMessage')}</p>
             <Button
               onClick={() => setDialogOpen(true)}
               variant='danger'>
-              Delete
+              {t('userPage.deleteButton')}
             </Button>
           </div>
         )}
@@ -99,8 +128,8 @@ const UserPage: React.FC = () => {
           isOpen={isDialogOpen}
           onClose={handleClose}
           onConfirm={handleDeleteAll}
-          title='Delete All Transactions'
-          message='Are you sure you want to delete all transactions? This action cannot be undone.'
+          title={t('userPage.dialogTitle')}
+          message={t('userPage.dialogMessage')}
         />
       </div>
     </>

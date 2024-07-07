@@ -2,12 +2,15 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 import { Category, PaymentType } from '../../../interfaces/interfaces';
 import { CREATE_TRANSACTION } from '../../../graphql/mutations/transaction.mutation';
 import Button from './Button';
 
 const TransactionForm: React.FC = () => {
+  const { t } = useTranslation();
+
   const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
     refetchQueries: ['GetTransactions', 'GetTransactionStatistics'],
   });
@@ -34,12 +37,12 @@ const TransactionForm: React.FC = () => {
       await createTransaction({ variables: { input: transactionData } });
       form.reset();
       setSelectedDate(today);
-      toast.success('Transaction created successfully');
+      toast.success(t('transactionForm.transactionSuccess'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error('An unknown error occurred');
+        toast.error(t('transactionForm.unknownError'));
       }
     }
   };
@@ -49,7 +52,7 @@ const TransactionForm: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     if (name === 'amount' && parseFloat(value) < 0) {
-      toast.error('Amount cannot be negative');
+      toast.error(t('transactionForm.negativeAmountError'));
       return;
     }
   };
@@ -68,14 +71,14 @@ const TransactionForm: React.FC = () => {
           <label
             className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='description'>
-            Describe your transaction
+            {t('transactionForm.transactionDescriptionLabel')}
           </label>
           <input
             className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
             id='description'
             name='description'
             type='text'
-            placeholder='Rent, Groceries, Salary, etc.'
+            placeholder={t('transactionForm.transactionDescriptionPlaceholder')}
           />
         </div>
       </div>
@@ -85,7 +88,7 @@ const TransactionForm: React.FC = () => {
           <label
             className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='paymentType'>
-            Payment Type
+            {t('transactionForm.paymentTypeLabel')}
           </label>
           <div className='relative'>
             <select
@@ -96,7 +99,7 @@ const TransactionForm: React.FC = () => {
                 <option
                   key={type}
                   value={type}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                  {t(`transactionForm.paymentType.${type}`)}
                 </option>
               ))}
             </select>
@@ -116,7 +119,7 @@ const TransactionForm: React.FC = () => {
           <label
             className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='category'>
-            Category
+            {t('transactionForm.categoryLabel')}
           </label>
           <div className='relative'>
             <select
@@ -127,7 +130,7 @@ const TransactionForm: React.FC = () => {
                 <option
                   key={type}
                   value={type}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                  {t(`transactionForm.category.${type}`)}
                 </option>
               ))}
             </select>
@@ -147,7 +150,7 @@ const TransactionForm: React.FC = () => {
           <label
             className='block uppercase text-xs font-bold mb-2'
             htmlFor='amount'>
-            Amount
+            {t('transactionForm.amountLabel')}
           </label>
           <input
             className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
@@ -166,14 +169,14 @@ const TransactionForm: React.FC = () => {
           <label
             className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='location'>
-            Location
+            {t('transactionForm.locationLabel')}
           </label>
           <input
             className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
             id='location'
             name='location'
             type='text'
-            placeholder='St. Gallen'
+            placeholder={t('transactionForm.locationPlaceholder')}
           />
         </div>
 
@@ -182,7 +185,7 @@ const TransactionForm: React.FC = () => {
           <label
             className='block uppercase tracking-wide text-xs font-bold mb-2'
             htmlFor='date'>
-            Date
+            {t('transactionForm.dateLabel')}
           </label>
           <input
             value={selectedDate}
@@ -191,7 +194,7 @@ const TransactionForm: React.FC = () => {
             name='date'
             id='date'
             className='appearance-none focus:text-black block w-full bg-royalBlue border border-royalBlue rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
-            placeholder='Select date'
+            placeholder={t('transactionForm.selectDate')}
           />
         </div>
       </div>
@@ -200,7 +203,9 @@ const TransactionForm: React.FC = () => {
         type='submit'
         variant='primary'
         disabled={loading}>
-        {loading ? 'Loading...' : 'Add Transaction'}
+        {loading
+          ? t('transactionForm.loading')
+          : t('transactionForm.addTransaction')}
       </Button>
     </form>
   );

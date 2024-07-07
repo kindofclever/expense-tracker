@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 import { UPDATE_TRANSACTION } from '../../graphql/mutations/transaction.mutation';
 import {
@@ -19,6 +20,7 @@ import Button from '../shared/custom/Button';
 import CustomHelmet from '../shared/custom/CustomHelmet';
 
 const TransactionPage: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -68,13 +70,13 @@ const TransactionPage: React.FC = () => {
           },
         },
       });
-      toast.success('Transaction updated successfully');
+      toast.success(t('transactionPage.successMessage'));
       navigate('/');
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error('An unknown error occurred');
+        toast.error(t('transactionPage.unknownError'));
       }
     }
   };
@@ -84,7 +86,7 @@ const TransactionPage: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     if (name === 'amount' && parseFloat(value) < 0) {
-      toast.error('Amount cannot be negative');
+      toast.error(t('transactionPage.negativeAmountError'));
       return;
     }
     setFormData((prevFormData) => ({
@@ -98,14 +100,14 @@ const TransactionPage: React.FC = () => {
   return (
     <>
       <CustomHelmet
-        title='Update Transaction - Expense Tracker'
-        description='Update your transaction details on Expense Tracker.'
-        keywords='Update Transaction, Expense Tracker, Budgeting, Finance'
+        title={t('transactionPage.title')}
+        description={t('transactionPage.description')}
+        keywords={t('transactionPage.keywords')}
         canonical={`/transaction/${id}`}
       />
       <div className='h-screen max-w-4xl mx-auto flex flex-col items-center'>
         <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-orangeWheel via-royalBlue to-madder inline-block text-transparent bg-clip-text'>
-          Update this transaction
+          {t('transactionPage.header')}
         </p>
         <form
           className='w-full max-w-lg flex flex-col gap-5 px-3'
@@ -116,14 +118,14 @@ const TransactionPage: React.FC = () => {
               <label
                 className='block uppercase tracking-wide text-xs font-bold mb-2'
                 htmlFor='description'>
-                Transaction
+                {t('transactionPage.transactionLabel')}
               </label>
               <input
                 className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
                 id='description'
                 name='description'
                 type='text'
-                placeholder='Rent, Groceries, Salary, etc.'
+                placeholder={t('transactionPage.transactionPlaceholder')}
                 value={formData.description || ''}
                 onChange={handleInputChange}
               />
@@ -135,11 +137,11 @@ const TransactionPage: React.FC = () => {
               <label
                 className='block uppercase tracking-wide text-xs font-bold mb-2'
                 htmlFor='paymentType'>
-                Payment Type
+                {t('transactionPage.paymentTypeLabel')}
               </label>
               <div className='relative'>
                 <select
-                  className='block appearance-none w-full focus:text-black bg-royalBlue border border-royalBlue  py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-white'
+                  className='block appearance-none w-full focus:text-black bg-royalBlue border border-royalBlue py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-white'
                   id='paymentType'
                   name='paymentType'
                   onChange={handleInputChange}
@@ -166,13 +168,13 @@ const TransactionPage: React.FC = () => {
             {/* CATEGORY */}
             <div className='w-full flex-1 mb-6 md:mb-0'>
               <label
-                className='block uppercase tracking-wide  text-xs font-bold mb-2'
+                className='block uppercase tracking-wide text-xs font-bold mb-2'
                 htmlFor='category'>
-                Category
+                {t('transactionPage.categoryLabel')}
               </label>
               <div className='relative'>
                 <select
-                  className='block appearance-none focus:text-black w-full bg-royalBlue border border-royalBlue  py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-white'
+                  className='block appearance-none focus:text-black w-full bg-royalBlue border border-royalBlue py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-white'
                   id='category'
                   name='category'
                   onChange={handleInputChange}
@@ -199,16 +201,16 @@ const TransactionPage: React.FC = () => {
             {/* AMOUNT */}
             <div className='w-full flex-1 mb-6 md:mb-0'>
               <label
-                className='block uppercase  text-xs font-bold mb-2'
+                className='block uppercase text-xs font-bold mb-2'
                 htmlFor='amount'>
-                Amount
+                {t('transactionPage.amountLabel')}
               </label>
               <input
                 className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
                 id='amount'
                 name='amount'
                 type='number'
-                placeholder='150'
+                placeholder={t('transactionPage.amountPlaceholder')}
                 value={formData.amount?.toString() || ''}
                 onChange={handleInputChange}
               />
@@ -219,16 +221,16 @@ const TransactionPage: React.FC = () => {
           <div className='flex flex-wrap gap-3'>
             <div className='w-full flex-1 mb-6 md:mb-0'>
               <label
-                className='block uppercase tracking-wide  text-xs font-bold mb-2'
+                className='block uppercase tracking-wide text-xs font-bold mb-2'
                 htmlFor='location'>
-                Location
+                {t('transactionPage.locationLabel')}
               </label>
               <input
                 className='appearance-none block w-full focus:text-black bg-royalBlue border border-royalBlue rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
                 id='location'
                 name='location'
                 type='text'
-                placeholder='St. Gallen'
+                placeholder={t('transactionPage.locationPlaceholder')}
                 value={formData.location || ''}
                 onChange={handleInputChange}
               />
@@ -239,7 +241,7 @@ const TransactionPage: React.FC = () => {
               <label
                 className='block uppercase tracking-wide text-xs font-bold mb-2'
                 htmlFor='date'>
-                Date
+                {t('transactionPage.dateLabel')}
               </label>
               <input
                 type='date'
@@ -258,7 +260,9 @@ const TransactionPage: React.FC = () => {
             variant='primary'
             className='font-bold w-full rounded px-4 py-2'
             disabled={loadingUpdate}>
-            {loadingUpdate ? 'Updating...' : 'Update Transaction'}
+            {loadingUpdate
+              ? t('transactionPage.loadingUpdate')
+              : t('transactionPage.updateButton')}
           </Button>
         </form>
       </div>

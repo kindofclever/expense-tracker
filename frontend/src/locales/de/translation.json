@@ -74,5 +74,77 @@
     "negativeAmountError": "Der Betrag darf nicht negativ sein",
     "unknownError": "Ein unbekannter Fehler ist aufgetreten",
     "successMessage": "Transaktion erfolgreich aktualisiert"
+  },
+  "userPage": {
+    "loading": "...Laden",
+    "error": "Fehler: {{message}}",
+    "notLoggedIn": "Sie müssen eingeloggt sein, um diese Seite zu sehen.",
+    "welcome": "Willkommen auf Ihrem Profil, {{username}}!",
+    "deleteButton": "Löschen",
+    "deleteMessage": "Klicken Sie auf die Schaltfläche, um alle Ihre Transaktionen zu löschen",
+    "dialogTitle": "Alle Transaktionen löschen",
+    "dialogMessage": "Sind Sie sicher, dass Sie alle Transaktionen löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleteSuccess": "Alle Transaktionen wurden erfolgreich gelöscht!",
+    "deleteFailed": "Fehler beim Löschen der Transaktionen.",
+    "profilePageTitle": "Profilseite - Ausgaben Tracker",
+    "profilePageDescription": "Verschaffen Sie sich einen Überblick über Ihr Konto im Ausgaben Tracker, um Ihre Finanzen effizient zu verwalten.",
+    "profilePageKeywords": "Profil, Ausgaben Tracker, Budgetierung, Finanzen",
+    "switchLanguage": "Sprache wechseln",
+    "english": "Englisch",
+    "german": "Deutsch"
+  },
+  "card": {
+    "loading": "Laden...",
+    "deleteSuccess": "Transaktion erfolgreich gelöscht",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten",
+    "confirmDeletion": "Löschung bestätigen",
+    "confirmMessage": "Sind Sie sicher, dass Sie diese Transaktion löschen möchten?",
+    "description": "Beschreibung",
+    "paymentType": "Zahlungsmethode",
+    "amount": "Betrag",
+    "location": "Ort"
+  },
+  "cards": {
+    "title": "Transaktionen",
+    "searchPlaceholder": "Nach Transaktionen suchen",
+    "searchButton": "Suchen",
+    "resetButton": "Zurücksetzen",
+    "loading": "Transaktionen werden aktualisiert...",
+    "noTransactions": "Keine Transaktionen gefunden.",
+    "pageInfo": "Seite {{currentPage}} von {{totalPages}}"
+  },
+  "confirmationDialog": {
+    "cancel": "Abbrechen",
+    "delete": "Löschen"
+  },
+  "header": {
+    "welcome": "Willkommen beim Ausgaben Tracker"
+  },
+  "transactionForm": {
+    "transactionDescriptionLabel": "Beschreiben Sie Ihre Transaktion",
+    "transactionDescriptionPlaceholder": "Miete, Lebensmittel, Gehalt, etc.",
+    "paymentTypeLabel": "Zahlungsart",
+    "categoryLabel": "Kategorie",
+    "amountLabel": "Betrag",
+    "locationLabel": "Ort",
+    "locationPlaceholder": "St. Gallen",
+    "dateLabel": "Datum",
+    "selectDate": "Datum auswählen",
+    "transactionSuccess": "Transaktion erfolgreich erstellt",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten",
+    "negativeAmountError": "Der Betrag darf nicht negativ sein",
+    "loading": "Lädt...",
+    "addTransaction": "Transaktion hinzufügen",
+    "paymentType": {
+      "cash": "Bargeld",
+      "debit": "Debitkarte",
+      "credit": "Kreditkarte",
+      "twint": "Twint"
+    },
+    "category": {
+      "investment": "Investition",
+      "saving": "Sparen",
+      "expense": "Ausgabe"
+    }
   }
 }

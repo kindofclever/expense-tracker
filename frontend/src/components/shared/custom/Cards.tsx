@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
+import { useTranslation } from 'react-i18next';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import { RxReset } from 'react-icons/rx';
 import Card from './Card';
+import Button from './Button';
 import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
 import { GET_AUTHENTICATED_USER } from '../../../graphql/queries/user.query';
 import { Transaction } from '../../../interfaces/interfaces';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
-import { RxReset } from 'react-icons/rx';
-import Button from './Button';
 
 const Cards: React.FC = () => {
+  const { t } = useTranslation();
   const [offset, setOffset] = useState(0);
   const [filter, setFilter] = useState('');
   const [appliedFilter, setAppliedFilter] = useState('');
@@ -74,7 +76,7 @@ const Cards: React.FC = () => {
 
   return (
     <div className='w-full min-h-[40vh]'>
-      <p className='text-5xl font-bold text-center my-10'>Transactions</p>
+      <p className='text-5xl font-bold text-center my-10'>{t('cards.title')}</p>
       <form
         onSubmit={handleFilterSubmit}
         className='flex items-center justify-center w-full mb-5'>
@@ -82,7 +84,7 @@ const Cards: React.FC = () => {
           className='h-10 appearance-none focus:focus:text-black block w-full bg-royalBlue border border-royalBlue rounded-l px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
           id='filter'
           type='text'
-          placeholder='Search for transactions'
+          placeholder={t('cards.searchPlaceholder')}
           value={filter}
           onChange={handleFilterChange}
         />
@@ -90,7 +92,7 @@ const Cards: React.FC = () => {
           type='submit'
           variant='secondary'
           className='rounded-none'>
-          Search
+          {t('cards.searchButton')}
         </Button>
         <Button
           type='button'
@@ -101,7 +103,7 @@ const Cards: React.FC = () => {
         </Button>
       </form>
       {transactionsLoading && (
-        <p className='text-center text-gray-500'>Updating transactions...</p>
+        <p className='text-center text-gray-500'>{t('cards.loading')}</p>
       )}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-5'>
         {!transactionsLoading &&
@@ -127,7 +129,7 @@ const Cards: React.FC = () => {
           </div>
           <div>
             <p className='text-xl font-bold'>
-              Page {currentPage} of {totalPages}
+              {t('cards.pageInfo', { currentPage, totalPages })}
             </p>
           </div>
           <div>
@@ -143,7 +145,7 @@ const Cards: React.FC = () => {
       )}
       {!transactionsLoading && filteredTransactions.length === 0 && (
         <p className='text-2xl font-bold text-center w-full'>
-          No transactions found.
+          {t('cards.noTransactions')}
         </p>
       )}
     </div>
