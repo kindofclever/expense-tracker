@@ -118,7 +118,7 @@
     "delete": "Löschen"
   },
   "header": {
-    "welcome": "Willkommen beim Ausgaben Tracker"
+    "welcome": "Willkommen beim Expense Tracker"
   },
   "transactionForm": {
     "transactionDescriptionLabel": "Beschreiben Sie Ihre Transaktion",

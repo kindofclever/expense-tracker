@@ -4,7 +4,15 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   className?: string;
   disabled?: boolean;
-  variant?: 'primary' | 'secondary' | 'form' | 'black' | 'danger';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'form'
+    | 'black'
+    | 'danger'
+    | 'investment'
+    | 'saving'
+    | 'expense';
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,6 +26,9 @@ const Button: React.FC<ButtonProps> = ({
   const baseStyles = 'px-4 py-2 rounded text-white font-bold';
 
   const variantStyles = {
+    expense: 'bg-orangeWheel hover:bg-madder',
+    saving: 'bg-royalBlue hover:bg-madder',
+    investment: 'bg-madder hover:bg-orangeWheel',
     primary: 'bg-orangeWheel hover:bg-madder',
     secondary: 'bg-royalBlue hover:bg-madder',
     form: 'bg-royalBlue hover:bg-madder border border-royalBlue hover:border-madder text-lg',

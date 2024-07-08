@@ -77,7 +77,7 @@ export enum PaymentType {
 }
 
 export enum Category {
-  investment = 'investment',
-  saving = 'saving',
-  expense = 'expense',
+  Investment = 'investment',
+  Saving = 'saving',
+  Expense = 'expense',
 }

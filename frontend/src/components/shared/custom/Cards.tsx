@@ -7,7 +7,7 @@ import Card from './Card';
 import Button from './Button';
 import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
 import { GET_AUTHENTICATED_USER } from '../../../graphql/queries/user.query';
-import { Transaction } from '../../../interfaces/interfaces';
+import { Category, Transaction } from '../../../interfaces/interfaces';
 
 const Cards: React.FC = () => {
   const { t } = useTranslation();
@@ -22,6 +22,8 @@ const Cards: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const limit = 6;
+
+  const categories = Object.values(Category);
 
   const {
     data: transactionsData,
@@ -67,6 +69,21 @@ const Cards: React.FC = () => {
     refetch({ offset: 0, limit, filter: '' });
   };
 
+  const handleCategoryClick = (category: string) => {
+    const partialFilter = category.slice(0, 3);
+    setFilter(partialFilter);
+    setAppliedFilter(partialFilter);
+    setOffset(0);
+    refetch({ offset: 0, limit, filter: partialFilter });
+  };
+
+  const handleAllCategoriesClick = () => {
+    setFilter('');
+    setAppliedFilter('');
+    setOffset(0);
+    refetch({ offset: 0, limit, filter: '' });
+  };
+
   const loadMoreTransactions = (direction: 'next' | 'prev') => {
     const newOffset =
       direction === 'next' ? offset + limit : Math.max(0, offset - limit);
@@ -75,11 +92,11 @@ const Cards: React.FC = () => {
   };
 
   return (
-    <div className='w-full min-h-[40vh]'>
+    <section className='w-full min-h-[40vh]'>
       <p className='text-5xl font-bold text-center my-10'>{t('cards.title')}</p>
       <form
         onSubmit={handleFilterSubmit}
-        className='flex items-center justify-center w-full mb-5'>
+        className='flex items-center justify-end mb-5'>
         <input
           className='h-10 appearance-none focus:focus:text-black block w-full bg-royalBlue border border-royalBlue rounded-l px-4 leading-tight focus:outline-none focus:bg-white focus:border-white'
           id='filter'
@@ -102,6 +119,22 @@ const Cards: React.FC = () => {
           <RxReset size={24} />
         </Button>
       </form>
+      <div className='flex justify-end mb-5 gap-5'>
+        <Button
+          variant='primary'
+          onClick={handleAllCategoriesClick}>
+          All Categories
+        </Button>
+        {categories.map((category) => (
+          <Button
+            key={category}
+            variant={category}
+            onClick={() => handleCategoryClick(category)}
+            className='capitalize'>
+            {category}
+          </Button>
+        ))}
+      </div>
       {transactionsLoading && (
         <p className='text-center text-gray-500'>{t('cards.loading')}</p>
       )}
@@ -148,7 +181,7 @@ const Cards: React.FC = () => {
           {t('cards.noTransactions')}
         </p>
       )}
-    </div>
+    </section>
   );
 };
 

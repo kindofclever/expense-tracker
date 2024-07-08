@@ -134,16 +134,16 @@ const HomePage: React.FC = () => {
           )}
         </div>
 
-        <div className='flex flex-wrap w-full justify-between items-start gap-6 min-h-[40vh]'>
-          {transactionData?.categoryStatistics &&
-            transactionData.categoryStatistics.length > 0 && (
-              <div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]'>
+        <div className='flex flex-wrap w-full justify-between items-start gap-6 min-h-[40vh] '>
+          <div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]'>
+            {transactionData?.categoryStatistics &&
+              transactionData.categoryStatistics.length > 0 && (
                 <Pie
                   data={chartData}
                   options={options}
                 />
-              </div>
-            )}
+              )}
+          </div>
           <div className='w-full md:w-1/2'>
             <TransactionForm />
           </div>
