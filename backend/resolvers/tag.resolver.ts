@@ -6,29 +6,25 @@ const prisma = new PrismaClient();
 const tagResolver: IResolvers = {
   Query: {
     tags: async () => {
-      const tags = await prisma.tag.findMany();
-      return tags;
+      return await prisma.tag.findMany();
     },
     userTags: async (_, { userId }: { userId: string }) => {
       const user = await prisma.user.findUnique({
         where: { id: parseInt(userId) },
         include: { tags: { include: { tag: true } } },
       });
-      const userTags = user?.tags.map(userTag => userTag.tag) || [];
-      return userTags;
+      return user?.tags.map(userTag => userTag.tag) || [];
     },
     customTags: async () => {
-      const customTags = await prisma.customTag.findMany();
-      return customTags;
+      return await prisma.customTag.findMany();
     },
   },
 
   Mutation: {
     createTag: async (_: any, { name }: { name: string }) => {
-      const newTag = await prisma.tag.create({
+      return await prisma.tag.create({
         data: { name },
       });
-      return newTag;
     },
 
     addUserTag: async (_: any, { userId, tagId }: { userId: string; tagId: string }) => {
@@ -44,18 +40,16 @@ const tagResolver: IResolvers = {
           }
         },
       });
-      const updatedUser = await prisma.user.findUnique({
+      return await prisma.user.findUnique({
         where: { id: parseInt(userId) },
         include: { tags: { include: { tag: true } } },
       });
-      return updatedUser;
     },
 
     createCustomTag: async (_: any, { name, searchTerm }: { name: string, searchTerm: string }) => {
-      const newCustomTag = await prisma.customTag.create({
+      return await prisma.customTag.create({
         data: { name, searchTerm },
       });
-      return newCustomTag;
     },
   },
 };
