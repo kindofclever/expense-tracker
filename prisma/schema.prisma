@@ -6,6 +6,7 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
 model User {
   id              Int          @id @default(autoincrement())
   username        String       @unique
@@ -15,6 +16,8 @@ model User {
   gender          Gender
   transactions    Transaction[]
   tags            UserTag[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model Transaction {
@@ -27,6 +30,8 @@ model Transaction {
   date        String
   userId      Int
   user        User         @relation(fields: [userId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Tag {
@@ -42,6 +47,14 @@ model UserTag {
   tag    Tag  @relation(fields: [tagId], references: [id])
 
   @@id([userId, tagId])
+}
+
+model CustomTag {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  searchTerm String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 enum PaymentType {

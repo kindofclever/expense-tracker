@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdAdd,
+} from 'react-icons/md';
 import { RxReset } from 'react-icons/rx';
 import Card from './Card';
 import Button from './Button';
+import CustomTagDialog from './CustomTagDialog';
 import { GET_TRANSACTIONS } from '../../../graphql/queries/transaction.query';
 import { GET_AUTHENTICATED_USER } from '../../../graphql/queries/user.query';
 import { Category, Transaction } from '../../../interfaces/interfaces';
+import { GET_CUSTOM_TAGS } from '../../../graphql/queries/tag.query';
+
+interface CustomTag {
+  id: string;
+  name: string;
+  searchTerm: string;
+}
 
 const Cards: React.FC = () => {
   const { t } = useTranslation();
-  const [offset, setOffset] = useState(0);
-  const [filter, setFilter] = useState('');
-  const [appliedFilter, setAppliedFilter] = useState('');
+  const [offset, setOffset] = useState<number>(0);
+  const [filter, setFilter] = useState<string>('');
+  const [appliedFilter, setAppliedFilter] = useState<string>('');
   const [filteredTransactions, setFilteredTransactions] = useState<
     Transaction[]
   >([]);
-  const [totalTransactions, setTotalTransactions] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [totalTransactions, setTotalTransactions] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [customTags, setCustomTags] = useState<CustomTag[]>([]);
 
   const limit = 6;
   const categories = Object.values(Category);
@@ -34,10 +48,12 @@ const Cards: React.FC = () => {
 
   const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
 
+  const { data: customTagsData, refetch: refetchCustomTags } =
+    useQuery(GET_CUSTOM_TAGS);
+
   useEffect(() => {
     if (transactionsData) {
       const { transactions, total } = transactionsData.transactions;
-
       setFilteredTransactions(transactions);
       setTotalTransactions(total);
       setTotalPages(Math.ceil(total / limit));
@@ -48,6 +64,12 @@ const Cards: React.FC = () => {
       }
     }
   }, [transactionsData, offset, limit]);
+
+  useEffect(() => {
+    if (customTagsData) {
+      setCustomTags(customTagsData.customTags);
+    }
+  }, [customTagsData]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFilter(e.target.value);
@@ -79,12 +101,22 @@ const Cards: React.FC = () => {
     refetch({ offset: 0, limit, filter: '' });
   };
 
+  const handleCustomTagClick = (searchTerm: string) => {
+    setAppliedFilter(searchTerm);
+    setOffset(0);
+    refetch({ offset: 0, limit, filter: searchTerm });
+  };
+
   const loadMoreTransactions = (direction: 'next' | 'prev') => {
     const newOffset =
       direction === 'next' ? offset + limit : Math.max(0, offset - limit);
     setOffset(newOffset);
     refetch({ offset: newOffset, limit, filter: appliedFilter });
   };
+
+  const handleDialogOpen = () => setIsDialogOpen(true);
+  const handleDialogClose = () => setIsDialogOpen(false);
+  const handleTagCreated = () => refetchCustomTags();
 
   return (
     <section className='w-full min-h-[40vh]'>
@@ -129,6 +161,20 @@ const Cards: React.FC = () => {
             {t(`homePage.categories.${category.toLowerCase()}`)}
           </Button>
         ))}
+        {customTags.map((tag) => (
+          <Button
+            key={tag.id}
+            variant='secondary'
+            onClick={() => handleCustomTagClick(tag.searchTerm)}
+            className='capitalize'>
+            {tag.name}
+          </Button>
+        ))}
+        <Button
+          variant='secondary'
+          onClick={handleDialogOpen}>
+          <MdAdd size={24} />
+        </Button>
       </div>
       {transactionsLoading && (
         <p className='text-center text-gray-500'>{t('cards.loading')}</p>
@@ -178,6 +224,11 @@ const Cards: React.FC = () => {
           {t('cards.noTransactions')}
         </p>
       )}
+      <CustomTagDialog
+        isOpen={isDialogOpen}
+        onClose={handleDialogClose}
+        onTagCreated={handleTagCreated}
+      />
     </section>
   );
 };
