@@ -109,6 +109,7 @@
     "searchPlaceholder": "Nach Transaktionen suchen",
     "searchButton": "Suchen",
     "resetButton": "Zurücksetzen",
+    "allTransactions": "Alle Transaktionen",
     "loading": "Transaktionen werden aktualisiert...",
     "noTransactions": "Keine Transaktionen gefunden.",
     "pageInfo": "Seite {{currentPage}} von {{totalPages}}"

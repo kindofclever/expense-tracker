@@ -6,19 +6,19 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
-
 model User {
-  id              Int        @id @default(autoincrement())
-  username        String     @unique
+  id              Int          @id @default(autoincrement())
+  username        String       @unique
   name            String
   password        String
   profilePicture  String
   gender          Gender
   transactions    Transaction[]
+  tags            UserTag[]
 }
 
 model Transaction {
-  id          Int        @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   description String
   paymentType PaymentType
   category    String
@@ -26,7 +26,22 @@ model Transaction {
   location    String
   date        String
   userId      Int
-  user        User       @relation(fields: [userId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users UserTag[]
+}
+
+model UserTag {
+  userId Int
+  tagId  Int
+  user   User @relation(fields: [userId], references: [id])
+  tag    Tag  @relation(fields: [tagId], references: [id])
+
+  @@id([userId, tagId])
 }
 
 enum PaymentType {

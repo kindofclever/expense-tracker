@@ -12,62 +12,46 @@ const transactionResolver: IResolvers = {
         if (!user) throw new Error("Unauthorized");
         const userId = user.id;
 
-        // Helper function to check for partial matches
-        const getPartialEnumMatches = (filter, enumObject) => {
-          return Object.values(enumObject).filter(enumValue =>
+        // Check for partial matches in enums
+        const getPartialEnumMatches = (filter, enumObject) =>
+          Object.values(enumObject).filter(enumValue =>
             enumValue.toString().toLowerCase().includes(filter.toLowerCase())
           );
+
+        // Convert the filter if it is in the format dd.mm.yyyy
+        const convertDateFormat = (dateStr) => {
+          const parts = dateStr.split('.');
+          return parts.length === 3 && parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4
+            ? `${parts[2]}-${parts[1]}-${parts[0]}`
+            : null;
+        };
+
+        // Create date conditions for partial date matches
+        const getPartialDateConditions = (dateStr) => {
+          const conditions = [];
+          if (dateStr.length >= 4) conditions.push({ date: { contains: dateStr.slice(-4) } }); // Year
+          if (dateStr.length >= 7) conditions.push({ date: { contains: `-${dateStr.slice(3, 5)}-` } }); // Month
+          if (dateStr.length === 10) conditions.push({ date: { contains: `-${dateStr.slice(0, 2)}` } }); // Day
+          return conditions;
         };
 
         const paymentTypeMatches = getPartialEnumMatches(filter, PaymentType);
         const categoryMatches = getPartialEnumMatches(filter, Category);
-
-        const convertDateFormat = (dateStr) => {
-          const parts = dateStr.split('.');
-          if (parts.length === 3) {
-            const [day, month, year] = parts;
-            if (day.length === 2 && month.length === 2 && year.length === 4) {
-              return `${year}-${month}-${day}`;
-            }
-          }
-          return null;
-        };
-
-        const getPartialDateConditions = (dateStr) => {
-          const conditions = [];
-          if (dateStr.length >= 4) {
-            const year = dateStr.substring(6, 10); // Extract year from dd.mm.yyyy
-            conditions.push({ date: { contains: year } });
-          }
-          if (dateStr.length >= 7) {
-            const month = dateStr.substring(3, 5); // Extract month from dd.mm.yyyy
-            conditions.push({ date: { contains: `-${month}-` } });
-          }
-          if (dateStr.length === 10) {
-            const day = dateStr.substring(0, 2); // Extract day from dd.mm.yyyy
-            conditions.push({ date: { contains: `-${day}` } });
-          }
-          return conditions;
-        };
-
-        // Convert the filter if it is in the format dd.mm.yyyy
         const convertedFilter = convertDateFormat(filter);
         const isValidConvertedDate = convertedFilter && !isNaN(new Date(convertedFilter).getTime());
 
         const dateConditions = isValidConvertedDate ? [{ date: { equals: convertedFilter } }] : getPartialDateConditions(filter);
 
-        const filterConditions = filter
-          ? {
-            OR: [
-              { description: { contains: filter } },
-              { location: { contains: filter } },
-              ...dateConditions,
-              ...(paymentTypeMatches.length > 0 ? [{ paymentType: { in: paymentTypeMatches } }] : []),
-              ...(categoryMatches.length > 0 ? [{ category: { in: categoryMatches } }] : []),
-              ...(isNaN(Number(filter)) ? [] : [{ amount: { equals: Number(filter) } }]),
-            ],
-          }
-          : {};
+        const filterConditions = filter ? {
+          OR: [
+            { description: { contains: filter } },
+            { location: { contains: filter } },
+            ...dateConditions,
+            ...(paymentTypeMatches.length ? [{ paymentType: { in: paymentTypeMatches } }] : []),
+            ...(categoryMatches.length ? [{ category: { in: categoryMatches } }] : []),
+            ...(isNaN(Number(filter)) ? [] : [{ amount: { equals: Number(filter) } }])
+          ],
+        } : {};
 
         const transactions = await prisma.transaction.findMany({
           where: { userId, ...filterConditions },

@@ -7,12 +7,30 @@ type User {
   profilePicture: String!
   gender: Gender!
   transactions: [Transaction!]!
+  tags: [Tag!]!
 }
 
 enum Gender {
   male
   female
   diverse
+}
+
+type Transaction {
+  id: ID!
+  description: String!
+  paymentType: PaymentType!
+  category: Category!
+  amount: Float!
+  location: String!
+  date: String!
+}
+
+enum PaymentType {
+  cash
+  debit
+  credit
+  twint
 }
 
 type Query {
@@ -41,6 +59,7 @@ input LoginInput {
 
 type LogoutResponse {
   message: String!
-}`
+}
+`;
 
-export default userTypeDef
+export default userTypeDef;

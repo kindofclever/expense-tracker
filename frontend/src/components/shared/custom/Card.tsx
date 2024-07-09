@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaLocationDot, FaSackDollar, FaTrash } from 'react-icons/fa6';
 import { MdOutlineDescription, MdOutlinePayments } from 'react-icons/md';
 import { HiPencilAlt } from 'react-icons/hi';
@@ -60,7 +60,9 @@ const Card: React.FC<CardProps> = ({ cardType, transaction, authUser }) => {
     <div className={`rounded-md p-4 ${cardClass}`}>
       <div className='flex flex-col gap-3'>
         <div className='flex flex-row items-center justify-between'>
-          <h2 className='text-lg font-bold capitalize'>{cardType}</h2>
+          <h2 className='text-lg font-bold capitalize'>
+            {t(`homePage.categories.${cardType.toLowerCase()}`)}
+          </h2>
           <div className='flex items-center gap-2'>
             <FaTrash
               className='cursor-pointer'

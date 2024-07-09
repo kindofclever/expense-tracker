@@ -22,7 +22,6 @@ const Cards: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const limit = 6;
-
   const categories = Object.values(Category);
 
   const {
@@ -37,8 +36,7 @@ const Cards: React.FC = () => {
 
   useEffect(() => {
     if (transactionsData) {
-      const transactions = transactionsData.transactions.transactions || [];
-      const total = transactionsData.transactions.total || 0;
+      const { transactions, total } = transactionsData.transactions;
 
       setFilteredTransactions(transactions);
       setTotalTransactions(total);
@@ -51,9 +49,8 @@ const Cards: React.FC = () => {
     }
   }, [transactionsData, offset, limit]);
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFilter(e.target.value);
-  };
 
   const handleFilterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,14 +68,12 @@ const Cards: React.FC = () => {
 
   const handleCategoryClick = (category: string) => {
     const partialFilter = category.slice(0, 3);
-    setFilter(partialFilter);
     setAppliedFilter(partialFilter);
     setOffset(0);
     refetch({ offset: 0, limit, filter: partialFilter });
   };
 
   const handleAllCategoriesClick = () => {
-    setFilter('');
     setAppliedFilter('');
     setOffset(0);
     refetch({ offset: 0, limit, filter: '' });
@@ -93,7 +88,7 @@ const Cards: React.FC = () => {
 
   return (
     <section className='w-full min-h-[40vh]'>
-      <p className='text-5xl font-bold text-center my-10'>{t('cards.title')}</p>
+      <p className='text-5xl font-bold text-center my-5'>{t('cards.title')}</p>
       <form
         onSubmit={handleFilterSubmit}
         className='flex items-center justify-end mb-5'>
@@ -123,7 +118,7 @@ const Cards: React.FC = () => {
         <Button
           variant='primary'
           onClick={handleAllCategoriesClick}>
-          All Categories
+          {t('cards.allTransactions')}
         </Button>
         {categories.map((category) => (
           <Button
@@ -131,7 +126,7 @@ const Cards: React.FC = () => {
             variant={category}
             onClick={() => handleCategoryClick(category)}
             className='capitalize'>
-            {category}
+            {t(`homePage.categories.${category.toLowerCase()}`)}
           </Button>
         ))}
       </div>
@@ -140,7 +135,7 @@ const Cards: React.FC = () => {
       )}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-5'>
         {!transactionsLoading &&
-          filteredTransactions.map((transaction: Transaction) => (
+          filteredTransactions.map((transaction) => (
             <Card
               key={transaction.id}
               transaction={transaction}
@@ -151,29 +146,21 @@ const Cards: React.FC = () => {
       </div>
       {totalPages > 1 && (
         <div className='flex justify-between items-center mb-5'>
-          <div>
-            {offset > 0 && (
-              <Button
-                onClick={() => loadMoreTransactions('prev')}
-                variant='secondary'>
-                <MdKeyboardArrowLeft size={24} />
-              </Button>
-            )}
-          </div>
-          <div>
-            <p className='text-xl font-bold'>
-              {t('cards.pageInfo', { currentPage, totalPages })}
-            </p>
-          </div>
-          <div>
-            {totalTransactions > offset + limit && (
-              <Button
-                onClick={() => loadMoreTransactions('next')}
-                variant='secondary'>
-                <MdKeyboardArrowRight size={24} />
-              </Button>
-            )}
-          </div>
+          <Button
+            onClick={() => loadMoreTransactions('prev')}
+            variant='secondary'
+            disabled={offset === 0}>
+            <MdKeyboardArrowLeft size={24} />
+          </Button>
+          <p className='text-xl font-bold'>
+            {t('cards.pageInfo', { currentPage, totalPages })}
+          </p>
+          <Button
+            onClick={() => loadMoreTransactions('next')}
+            variant='secondary'
+            disabled={offset + limit >= totalTransactions}>
+            <MdKeyboardArrowRight size={24} />
+          </Button>
         </div>
       )}
       {!transactionsLoading && filteredTransactions.length === 0 && (

@@ -106,8 +106,8 @@ const HomePage: React.FC = () => {
         keywords={t('homePage.keywords')}
         canonical='/home'
       />
-      <div className='flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center'>
-        <div className='flex flex-col md:flex-row items-center gap-y-7 md:gap-y-0 md:gap-x-4'>
+      <div className='flex flex-col items-center max-w-7xl mx-auto z-20 relative justify-center'>
+        <div className='flex flex-col md:flex-row items-center gap-y-5 md:gap-y-2 md:gap-x-4 mb-5'>
           <SubHeader
             text={`${t('homePage.hello')} ${authUserData?.authUser.username}!`}
           />
@@ -134,7 +134,7 @@ const HomePage: React.FC = () => {
           )}
         </div>
 
-        <div className='flex flex-wrap w-full justify-between items-start gap-6 min-h-[40vh] '>
+        <div className='flex flex-wrap w-full justify-between items-start min-h-[40vh] '>
           <div className='h-[330px] w-[330px] md:h-[360px] md:w-[360px]'>
             {transactionData?.categoryStatistics &&
               transactionData.categoryStatistics.length > 0 && (

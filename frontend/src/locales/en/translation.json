@@ -108,6 +108,7 @@
     "title": "Transactions",
     "searchPlaceholder": "Search for transactions",
     "searchButton": "Search",
+    "allTransactions": "All transactions",
     "resetButton": "Reset",
     "loading": "Updating transactions...",
     "noTransactions": "No transactions found.",
