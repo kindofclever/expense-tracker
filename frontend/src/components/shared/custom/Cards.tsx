@@ -146,21 +146,31 @@ const Cards: React.FC = () => {
       </div>
       {totalPages > 1 && (
         <div className='flex justify-between items-center mb-5'>
-          <Button
-            onClick={() => loadMoreTransactions('prev')}
-            variant='secondary'
-            disabled={offset === 0}>
-            <MdKeyboardArrowLeft size={24} />
-          </Button>
-          <p className='text-xl font-bold'>
-            {t('cards.pageInfo', { currentPage, totalPages })}
-          </p>
-          <Button
-            onClick={() => loadMoreTransactions('next')}
-            variant='secondary'
-            disabled={offset + limit >= totalTransactions}>
-            <MdKeyboardArrowRight size={24} />
-          </Button>
+          <div>
+            {currentPage > 1 && (
+              <Button
+                onClick={() => loadMoreTransactions('prev')}
+                variant='secondary'
+                disabled={offset === 0}>
+                <MdKeyboardArrowLeft size={24} />
+              </Button>
+            )}
+          </div>
+          <div>
+            <p className='text-xl font-bold'>
+              {t('cards.pageInfo', { currentPage, totalPages })}
+            </p>
+          </div>
+          <div>
+            {currentPage < totalPages && (
+              <Button
+                onClick={() => loadMoreTransactions('next')}
+                variant='secondary'
+                disabled={offset + limit >= totalTransactions}>
+                <MdKeyboardArrowRight size={24} />
+              </Button>
+            )}
+          </div>
         </div>
       )}
       {!transactionsLoading && filteredTransactions.length === 0 && (
